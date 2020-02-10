@@ -8,4 +8,7 @@ export default {
   copy_text: 'Text kopieren',
   text_copied_to_clipboard: 'Text kopiert in die Zwischenablage',
   cancel: 'Absagen',
+  camera_permission: 'Erlaubnis zur Verwendung der Kamera',
+  camera_permission_description:
+    'Die App benötigt Ihre Erlaubnis, um die Kamera verwenden zu können',
 };

@@ -8,4 +8,7 @@ export default {
   copy_text: 'Kopi tekst',
   text_copied_to_clipboard: 'Text kopieret til clipboard',
   cancel: 'Afbestille',
+  camera_permission: 'Tilladelse til at bruge kamera',
+  camera_permission_description:
+    'Appen har brug for din tilladelse til at bruge dit kamera',
 };

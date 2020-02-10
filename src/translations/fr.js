@@ -8,4 +8,7 @@ export default {
   copy_text: 'Copier le texte',
   text_copied_to_clipboard: 'Texte copié dans le presse-papiers',
   cancel: 'Annuler',
+  camera_permission: "Autorisation d'utiliser la caméra",
+  camera_permission_description:
+    "L'application a besoin de votre autorisation pour utiliser l'appareil photo",
 };

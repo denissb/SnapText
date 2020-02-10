@@ -10,5 +10,6 @@ export default {
   ok: 'OK',
   cancel: 'Cancel',
   camera_permission: 'Permission to use camera',
-  camera_permission_description: 'We need your permission to use your camera',
+  camera_permission_description:
+    'The app needs your permission to use the camera',
 };

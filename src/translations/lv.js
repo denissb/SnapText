@@ -8,4 +8,7 @@ export default {
   copy_text: 'Kopēt tekstu',
   text_copied_to_clipboard: 'Teksts nokopēts starpliktuvē',
   cancel: 'Atcelt',
+  camera_permission: 'Atļauja izmantot kameru',
+  camera_permission_description:
+    'Lai lietotu kameru, aplikācijai ir nepieciešama jūsu atļauja',
 };
