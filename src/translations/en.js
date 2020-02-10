@@ -7,5 +7,8 @@ export default {
   copy: 'Copy',
   copy_text: 'Copy text',
   text_copied_to_clipboard: 'Text copied to clipboard',
+  ok: 'OK',
   cancel: 'Cancel',
+  camera_permission: 'Permission to use camera',
+  camera_permission_description: 'We need your permission to use your camera',
 };

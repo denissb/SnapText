@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Switch,
   Platform,
+  StatusBar,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import {useTranslation} from 'react-i18next';
@@ -24,7 +25,7 @@ type Props = {
 
 const isAndroid = Platform.OS === 'android';
 
-const Controls: () => React$Node = ({
+const BottomControls: () => React$Node = ({
   flash,
   setFlash,
   crop,
@@ -75,6 +76,22 @@ const Controls: () => React$Node = ({
   );
 };
 
+type TopControlProps = {
+  openImagePicker: Function,
+};
+
+const TopControls: () => React$Node = ({openImagePicker}: TopControlProps) => (
+  <View style={styles.topControls}>
+    <TouchableOpacity
+      style={styles.topContainer}
+      onPress={() => {
+        openImagePicker();
+      }}>
+      <Icon name="file-text" size={25} color={COLORS.SECONDARY} />
+    </TouchableOpacity>
+  </View>
+);
+
 const styles = StyleSheet.create({
   controls: {
     flexDirection: 'row',
@@ -114,6 +131,20 @@ const styles = StyleSheet.create({
   switch: {
     marginLeft: Platform.OS === 'ios' ? 5 : 0,
   },
+  topContainer: {
+    backgroundColor: 'rgba(50, 50, 50, 0.65)',
+    padding: 12,
+    borderRadius: 10,
+  },
+  topControls: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignSelf: 'stretch',
+    marginTop: StatusBar.currentHeight ? StatusBar.currentHeight + 16 : 20,
+    marginRight: 22,
+  },
 });
 
-export default Controls;
+export default BottomControls;
+
+export {TopControls};

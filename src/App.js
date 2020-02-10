@@ -10,12 +10,12 @@ import {
   Alert,
 } from 'react-native';
 import {RNCamera} from 'react-native-camera';
-import ImagePicker from 'react-native-image-crop-picker';
 import {useTranslation} from 'react-i18next';
 import SplashScreen from 'react-native-splash-screen';
 
 import {setup} from './services/i18n';
-import Controls from './components/Controls';
+import {openCropper, openImage} from './services/images';
+import BottomControls, {TopControls} from './components/Controls';
 import TextModal from './components/TextModal';
 import PendingView from './components/PendingView';
 import {COLORS} from './settings';
@@ -44,6 +44,21 @@ const App: () => React$Node = () => {
     setIsTextRecognised(textBlocks.length > 0);
   };
 
+  const onImage = textInImage => {
+    if (textInImage) {
+      setCapturedText(textInImage[0].resultText);
+      setIsModalVisible(true);
+    } else {
+      Alert.alert(t('error_in_recognition'));
+    }
+  };
+
+  const openImagePicker = async () => {
+    const image = await openImage(t);
+    const textInImage = await RNMlKit.deviceTextRecognition(image.path);
+    onImage(textInImage);
+  };
+
   const takePicture = async (camera, cropImage = false) => {
     const options = {
       quality: 0.6,
@@ -57,33 +72,21 @@ const App: () => React$Node = () => {
     let textInImage;
 
     if (cropImage) {
-      const cropedImage = await ImagePicker.openCropper({
-        path: data.uri,
-        freeStyleCropEnabled: true,
-        hideBottomControls: true,
-        cropperToolbarTitle: t('choose_capture_area'),
-        cropperActiveWidgetColor: COLORS.PRIMARY,
-        cropperToolbarColor: COLORS.PRIMARY,
-      });
+      const cropedImage = await openCropper(data.uri, t);
 
       textInImage = await RNMlKit.deviceTextRecognition(cropedImage.path);
     } else {
       textInImage = await RNMlKit.deviceTextRecognition(data.uri);
     }
 
-    if (textInImage) {
-      setCapturedText(textInImage[0].resultText);
-      setIsModalVisible(true);
-    } else {
-      Alert.alert(t('error_in_recognition'));
-    }
+    onImage(textInImage);
   };
 
   return (
     <>
       <StatusBar
         barStyle="light-content"
-        backgroundColor="#3c98f0"
+        backgroundColor={COLORS.PRIMARY}
         translucent
       />
       <TextModal
@@ -103,26 +106,27 @@ const App: () => React$Node = () => {
           }
           onTextRecognized={onTextRecognized}
           androidCameraPermissionOptions={{
-            title: 'Permission to use camera',
-            message: 'We need your permission to use your camera',
-            buttonPositive: 'OK',
-            buttonNegative: 'Cancel',
+            title: t('camera_permission'),
+            message: t('camera_permission_description'),
+            buttonPositive: t('ok'),
+            buttonNegative: t('cancel'),
           }}>
           {({camera, status}) => {
             if (status !== 'READY') {
               return <PendingView status={status} />;
             }
 
-            return (
-              <Controls
+            return [
+              <TopControls openImagePicker={openImagePicker} />,
+              <BottomControls
                 takePicture={() => takePicture(camera, crop)}
                 crop={crop}
                 setCrop={setCrop}
                 setFlash={setFlash}
                 flash={flash}
                 isReady={isTextRecognised}
-              />
-            );
+              />,
+            ];
           }}
         </RNCamera>
       </Wrapper>
@@ -138,7 +142,7 @@ const styles = StyleSheet.create({
   },
   preview: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
   buttonLabel: {
