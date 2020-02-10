@@ -53,7 +53,7 @@ const BottomControls: () => React$Node = ({
       <View style={styles.controlsContainer}>
         <TouchableOpacity
           onPress={() =>
-            isReady ? takePicture() : showToast(t('no_capture_text'))
+            isReady || flash ? takePicture() : showToast(t('no_capture_text'))
           }
           style={
             isReady ? [styles.capture, styles.readyCapture] : styles.capture
