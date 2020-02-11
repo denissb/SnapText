@@ -1,6 +1,5 @@
 // @flow
 import React, {useState, useEffect} from 'react';
-import RNMlKit from 'react-native-firebase-mlkit';
 import {
   StyleSheet,
   StatusBar,
@@ -15,6 +14,8 @@ import SplashScreen from 'react-native-splash-screen';
 
 import {setup} from './services/i18n';
 import {openCropper, openImage} from './services/images';
+import {recogniseText} from './services/textDetector';
+
 import BottomControls, {TopControls} from './components/Controls';
 import TextModal from './components/TextModal';
 import PendingView from './components/PendingView';
@@ -55,7 +56,7 @@ const App: () => React$Node = () => {
 
   const openImagePicker = async () => {
     const image = await openImage(t);
-    const textInImage = await RNMlKit.deviceTextRecognition(image.path);
+    const textInImage = await recogniseText(image.path);
     onImage(textInImage);
   };
 
@@ -74,9 +75,9 @@ const App: () => React$Node = () => {
     if (cropImage) {
       const cropedImage = await openCropper(data.uri, t);
 
-      textInImage = await RNMlKit.deviceTextRecognition(cropedImage.path);
+      textInImage = await recogniseText(cropedImage.path);
     } else {
-      textInImage = await RNMlKit.deviceTextRecognition(data.uri);
+      textInImage = await recogniseText(data.uri);
     }
 
     onImage(textInImage);
