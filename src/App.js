@@ -118,8 +118,12 @@ const App: () => React$Node = () => {
             }
 
             return [
-              <TopControls openImagePicker={openImagePicker} />,
+              <TopControls
+                openImagePicker={openImagePicker}
+                key="topControls"
+              />,
               <BottomControls
+                key="bottomControls"
                 takePicture={() => takePicture(camera, crop)}
                 crop={crop}
                 setCrop={setCrop}
