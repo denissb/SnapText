@@ -1,6 +1,6 @@
 export default {
   choose_capture_area: 'Wählen den Aufnahmebereich',
-  error_in_recognition: 'Error recognising text',
+  error_in_recognition: 'Error recognising text 😢',
   no_capture_text: 'Fehler Text zu Erkennen',
   camera_not_authorized_text:
     'Diese App erfordert die Erlaubnis, die Kamera zu benutzen. Bitte erlauben Sie SnapText die Kamera zu benutzen in den Einstellungen Ihres Geräts.',

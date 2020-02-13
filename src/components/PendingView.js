@@ -1,6 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
+import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {COLORS} from '../settings';
 
@@ -20,7 +19,7 @@ const PendingView = ({status}: Props) => {
   return (
     <View style={styles.loading}>
       {msg && <Text style={styles.resultText}>{msg}</Text>}
-      {!msg && <Icon name="loader" size={42} color={COLORS.SECONDARY} />}
+      {!msg && <ActivityIndicator size="large" color={COLORS.SECONDARY} />}
     </View>
   );
 };
@@ -37,6 +36,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     fontSize: 18,
     fontWeight: 'bold',
+    textAlign: 'center',
     color: COLORS.SECONDARY,
   },
 });

@@ -55,20 +55,26 @@ const TextModal: () => React$Node = ({
             hitSlop={hitSlop}>
             <Icon name="x" size={30} color={COLORS.TRINARY} />
           </TouchableOpacity>
-          <TextInput
-            value={content}
-            multiline
-            style={styles.text}
-            showSoftInputOnFocus={false}
-          />
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() =>
-              copyToClipboard(content, t('text_copied_to_clipboard'))
-            }>
-            <Icon name="copy" size={25} color={COLORS.SECONDARY} />
-            <Text style={styles.buttonText}>{t('copy')}</Text>
-          </TouchableOpacity>
+          {content ? (
+            <>
+              <TextInput
+                value={content}
+                multiline
+                style={styles.text}
+                showSoftInputOnFocus={false}
+              />
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() =>
+                  copyToClipboard(content, t('text_copied_to_clipboard'))
+                }>
+                <Icon name="copy" size={25} color={COLORS.SECONDARY} />
+                <Text style={styles.buttonText}>{t('copy')}</Text>
+              </TouchableOpacity>
+            </>
+          ) : (
+            <Text style={styles.text}>{t('error_in_recognition')}</Text>
+          )}
         </View>
       </View>
     </Modal>
