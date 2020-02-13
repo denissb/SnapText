@@ -50,8 +50,9 @@ const App: () => React$Node = () => {
   const onImage = textInImage => {
     if (textInImage && textInImage.length > 0) {
       setCapturedText(textInImage[0].resultText);
+    } else {
+      setCapturedText(undefined);
     }
-    setCapturedText(undefined);
     setIsModalVisible(true);
   };
 
