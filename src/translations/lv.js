@@ -11,4 +11,6 @@ export default {
   camera_permission: 'Atļauja izmantot kameru',
   camera_permission_description:
     'Lai lietotu kameru, aplikācijai ir nepieciešama jūsu atļauja',
+  privacy_policy_label: 'Privātuma politika un lietošanas noteikumi',
+  source_code_label: 'Pirmkods',
 };

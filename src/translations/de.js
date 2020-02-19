@@ -11,4 +11,6 @@ export default {
   camera_permission: 'Erlaubnis zur Verwendung der Kamera',
   camera_permission_description:
     'Die App benötigt Ihre Erlaubnis, um die Kamera verwenden zu können',
+  privacy_policy_label: 'Datenschutzerklärung und Nutzungsbedingungen',
+  source_code_label: 'Quellcode',
 };

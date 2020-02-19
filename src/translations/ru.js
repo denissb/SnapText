@@ -12,4 +12,6 @@ export default {
   camera_permission: 'Зпрос на доступ к камере',
   camera_permission_description:
     'Этому приложению нужен доступ к камере чтобы функционировать',
+  privacy_policy_label: 'Политика конфиденциальности',
+  source_code_label: 'Исходный код',
 };

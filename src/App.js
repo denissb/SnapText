@@ -6,7 +6,6 @@ import {
   View,
   SafeAreaView,
   Platform,
-  Alert,
   ActivityIndicator,
 } from 'react-native';
 import {RNCamera} from 'react-native-camera';

@@ -11,4 +11,6 @@ export default {
   camera_permission: "Autorisation d'utiliser la caméra",
   camera_permission_description:
     "L'application a besoin de votre autorisation pour utiliser l'appareil photo",
+  privacy_policy_label: 'Politique de confidentialité et conditions',
+  source_code_label: 'Code source',
 };

@@ -11,6 +11,8 @@ import {
 import Icon from 'react-native-vector-icons/Feather';
 import {useTranslation} from 'react-i18next';
 
+import Menu from './Menu';
+
 import {showToast} from '../services/toast';
 import {COLORS} from '../settings';
 
@@ -82,6 +84,7 @@ type TopControlProps = {
 
 const TopControls: () => React$Node = ({openImagePicker}: TopControlProps) => (
   <View style={styles.topControls}>
+    <Menu />
     <TouchableOpacity
       style={styles.topContainer}
       onPress={() => {
@@ -138,10 +141,10 @@ const styles = StyleSheet.create({
   },
   topControls: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
     alignSelf: 'stretch',
     marginTop: StatusBar.currentHeight ? StatusBar.currentHeight + 16 : 20,
-    marginRight: 22,
+    marginHorizontal: 22,
   },
 });
 

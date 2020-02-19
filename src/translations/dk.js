@@ -11,4 +11,6 @@ export default {
   camera_permission: 'Tilladelse til at bruge kamera',
   camera_permission_description:
     'Appen har brug for din tilladelse til at bruge dit kamera',
+  privacy_policy_label: 'Fortrolighedspolitik',
+  source_code_label: 'Kildekode',
 };
