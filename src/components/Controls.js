@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     margin: 10,
     borderWidth: 5,
-    borderColor: 'rgba(50, 50, 50, 0.65)',
+    borderColor: COLORS.TRANSPARECY,
   },
   readyCapture: {
     borderWidth: 5,
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(50, 50, 50, 0.65)',
+    backgroundColor: COLORS.TRANSPARECY,
     padding: 8,
     borderRadius: 10,
   },
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     marginLeft: Platform.OS === 'ios' ? 5 : 0,
   },
   topContainer: {
-    backgroundColor: 'rgba(50, 50, 50, 0.65)',
+    backgroundColor: COLORS.TRANSPARENCY,
     padding: 12,
     borderRadius: 10,
   },
