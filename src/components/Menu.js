@@ -4,8 +4,8 @@ import {StyleSheet, View, TouchableOpacity, Text, Linking} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import {COLORS, LINKS} from '../settings';
 import {useTranslation} from 'react-i18next';
-
-type Props = {};
+import WebViewModal from './WebViewModal';
+import policyContent from '../assets/html/policy';
 
 const openLink = async link => {
   try {
@@ -15,10 +15,11 @@ const openLink = async link => {
   }
 };
 
-const Menu: () => React$Node = ({}: Props) => {
+const Menu: () => React$Node = () => {
   const {t} = useTranslation();
 
   const [opened, setIsOpened] = useState(false);
+  const [policyModalVisible, setPolicyModalVisible] = useState(false);
 
   const hamburgerSyles = opened
     ? [styles.hamburger, styles.hamburgerOpened]
@@ -31,7 +32,7 @@ const Menu: () => React$Node = ({}: Props) => {
         onPress={() => setIsOpened(!opened)}>
         <Icon
           name="menu"
-          size={32}
+          size={30}
           color={opened ? COLORS.TRINARY : COLORS.SECONDARY}
         />
       </TouchableOpacity>
@@ -39,7 +40,7 @@ const Menu: () => React$Node = ({}: Props) => {
         <View style={styles.menu}>
           <TouchableOpacity
             style={styles.menuItem}
-            onPress={() => openLink(LINKS.POLICY)}>
+            onPress={() => setPolicyModalVisible(true)}>
             <Text style={styles.text}>{t('privacy_policy_label')}</Text>
           </TouchableOpacity>
           <View style={styles.line} />
@@ -48,6 +49,13 @@ const Menu: () => React$Node = ({}: Props) => {
             onPress={() => openLink(LINKS.SOURCE_CODE)}>
             <Text style={styles.text}>{t('source_code_label')}</Text>
           </TouchableOpacity>
+          <WebViewModal
+            visible={policyModalVisible}
+            setIsVisible={setPolicyModalVisible}
+            source={{
+              html: policyContent,
+            }}
+          />
         </View>
       )}
     </>
@@ -56,10 +64,11 @@ const Menu: () => React$Node = ({}: Props) => {
 
 const styles = StyleSheet.create({
   hamburger: {
-    borderColor: 'rgba(50, 50, 50, 0.65)',
+    backgroundColor: COLORS.TRANSPARENCY,
     paddingHorizontal: 10,
     paddingVertical: 8,
     borderRadius: 10,
+    justifyContent: 'center',
     alignItems: 'center',
   },
   hamburgerOpened: {
