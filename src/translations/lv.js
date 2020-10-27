@@ -13,4 +13,5 @@ export default {
     'Lai lietotu kameru, aplikācijai ir nepieciešama jūsu atļauja',
   privacy_policy_label: 'Privātuma politika un lietošanas noteikumi',
   source_code_label: 'Pirmkods',
+  open_link: 'Atvert saiti',
 };

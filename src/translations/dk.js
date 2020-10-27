@@ -13,4 +13,5 @@ export default {
     'Appen har brug for din tilladelse til at bruge dit kamera',
   privacy_policy_label: 'Fortrolighedspolitik',
   source_code_label: 'Kildekode',
+  open_link: 'Öffne link',
 };

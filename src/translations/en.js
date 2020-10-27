@@ -14,4 +14,5 @@ export default {
     'The app needs your permission to use the camera',
   privacy_policy_label: 'Privacy Policy & Terms',
   source_code_label: 'Source code',
+  open_link: 'Open link',
 };
