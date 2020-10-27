@@ -13,4 +13,5 @@ export default {
     "L'application a besoin de votre autorisation pour utiliser l'appareil photo",
   privacy_policy_label: 'Politique de confidentialité et conditions',
   source_code_label: 'Code source',
+  open_link: 'Ouvrir le lien',
 };

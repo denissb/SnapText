@@ -7,7 +7,7 @@ import {useTranslation} from 'react-i18next';
 import WebViewModal from './WebViewModal';
 import policyContent from '../assets/html/policy';
 
-const openLink = async link => {
+const openLink = async (link) => {
   try {
     await Linking.openURL(link);
   } catch (err) {

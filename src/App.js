@@ -32,6 +32,7 @@ const App: () => React$Node = () => {
   const {t} = useTranslation();
 
   const [isTextRecognised, setIsTextRecognised] = useState(false);
+  const [barCodeLink, setBarCodeLink] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [capturedText, setCapturedText] = useState();
   const [flash, setFlash] = useState(false);
@@ -46,7 +47,7 @@ const App: () => React$Node = () => {
     setIsTextRecognised(textBlocks.length > 0);
   };
 
-  const onImage = textInImage => {
+  const onImage = (textInImage) => {
     if (textInImage && textInImage.length > 0) {
       setCapturedText(textInImage[0].resultText);
     } else {
@@ -81,6 +82,19 @@ const App: () => React$Node = () => {
     }
   };
 
+  const barcodeRecognized = ({barcodes}) => {
+    barcodes.forEach(({type, data, format}) => {
+      if (type === 'URL') {
+        setBarCodeLink(data);
+      } else if (format !== 'None') {
+        setCapturedText(data);
+        setIsModalVisible(true);
+      } else {
+        setBarCodeLink(undefined);
+      }
+    });
+  };
+
   return (
     <>
       <StatusBar
@@ -109,7 +123,8 @@ const App: () => React$Node = () => {
             message: t('camera_permission_description'),
             buttonPositive: t('ok'),
             buttonNegative: t('cancel'),
-          }}>
+          }}
+          onGoogleVisionBarcodesDetected={barcodeRecognized}>
           {({camera, status}) => {
             if (status !== 'READY') {
               return <PendingView status={status} />;
@@ -132,6 +147,7 @@ const App: () => React$Node = () => {
                 key="bottomControls"
                 takePicture={() => takePicture(camera, crop)}
                 crop={crop}
+                barCodeLink={barCodeLink}
                 setCrop={setCrop}
                 setFlash={setFlash}
                 flash={flash}
@@ -162,9 +178,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(50, 50, 50, 0.65)',
     width: '100%',
-  },
-  buttonLabel: {
-    fontSize: 14,
   },
   result: {
     backgroundColor: COLORS.SECONDARY,

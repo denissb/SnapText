@@ -4,14 +4,17 @@ import {
   StyleSheet,
   View,
   TouchableOpacity,
+  Text,
   Switch,
   Platform,
   StatusBar,
+  Linking,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import {useTranslation} from 'react-i18next';
 
 import Menu from './Menu';
+import CopyButton from './CopyButton';
 
 import {showToast} from '../services/toast';
 import {COLORS} from '../settings';
@@ -23,9 +26,12 @@ type Props = {
   takePicture: Function,
   setCrop: Function,
   isReady: Boolean,
+  barCodeLink: String,
 };
 
 const isAndroid = Platform.OS === 'android';
+
+const openLink = (link) => Linking.openURL(link);
 
 const BottomControls: () => React$Node = ({
   flash,
@@ -33,45 +39,61 @@ const BottomControls: () => React$Node = ({
   crop,
   setCrop,
   takePicture,
+  barCodeLink,
   isReady,
 }: Props) => {
   const {t} = useTranslation();
 
   return (
-    <View style={styles.controls}>
-      <View style={styles.controlsContainer}>
-        <View style={styles.switchContainer}>
-          <Icon name="zap" size={25} color={COLORS.SECONDARY} />
-          <Switch
-            value={flash}
-            onValueChange={setFlash}
-            thumbColor={
-              isAndroid && (flash ? COLORS.PRIMARY : COLORS.SECONDARY)
-            }
-            style={styles.switch}
-          />
-        </View>
-      </View>
-      <View style={styles.controlsContainer}>
+    <View>
+      {barCodeLink && (
         <TouchableOpacity
-          onPress={() =>
-            isReady || flash ? takePicture() : showToast(t('no_capture_text'))
-          }
-          style={
-            isReady ? [styles.capture, styles.readyCapture] : styles.capture
-          }>
-          <Icon name="camera" size={32} color={COLORS.PRIMARY} />
+          style={styles.linkContainer}
+          onPress={() => openLink(barCodeLink)}>
+          <Text style={styles.linkLabel}>{t('open_link')}</Text>
+          <Text numberOfLines={1} selectable style={styles.linkText}>
+            {barCodeLink}
+          </Text>
+          <CopyButton content={barCodeLink} />
         </TouchableOpacity>
-      </View>
-      <View style={styles.controlsContainer}>
-        <View style={styles.switchContainer}>
-          <Icon name="crop" size={25} color={COLORS.SECONDARY} />
-          <Switch
-            value={crop}
-            onValueChange={setCrop}
-            thumbColor={isAndroid && (crop ? COLORS.PRIMARY : COLORS.SECONDARY)}
-            style={styles.switch}
-          />
+      )}
+      <View style={styles.controls}>
+        <View style={styles.controlsContainer}>
+          <View style={styles.switchContainer}>
+            <Icon name="zap" size={25} color={COLORS.SECONDARY} />
+            <Switch
+              value={flash}
+              onValueChange={setFlash}
+              thumbColor={
+                isAndroid && (flash ? COLORS.PRIMARY : COLORS.SECONDARY)
+              }
+              style={styles.switch}
+            />
+          </View>
+        </View>
+        <View style={styles.controlsContainer}>
+          <TouchableOpacity
+            onPress={() =>
+              isReady || flash ? takePicture() : showToast(t('no_capture_text'))
+            }
+            style={
+              isReady ? [styles.capture, styles.readyCapture] : styles.capture
+            }>
+            <Icon name="camera" size={32} color={COLORS.PRIMARY} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.controlsContainer}>
+          <View style={styles.switchContainer}>
+            <Icon name="crop" size={25} color={COLORS.SECONDARY} />
+            <Switch
+              value={crop}
+              onValueChange={setCrop}
+              thumbColor={
+                isAndroid && (crop ? COLORS.PRIMARY : COLORS.SECONDARY)
+              }
+              style={styles.switch}
+            />
+          </View>
         </View>
       </View>
     </View>
@@ -100,6 +122,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'stretch',
     paddingBottom: 10,
+  },
+  linkContainer: {
+    backgroundColor: COLORS.SECONDARY,
+    borderRadius: 10,
+    padding: 12,
+    margin: 12,
+    alignSelf: 'center',
+    alignItems: 'center',
+    maxWidth: 550,
+  },
+  linkText: {
+    marginVertical: 8,
+    color: COLORS.PRIMARY,
+    fontSize: 16,
+  },
+  linkLabel: {
+    color: COLORS.TRINARY,
+    fontSize: 16,
   },
   capture: {
     backgroundColor: COLORS.SECONDARY,

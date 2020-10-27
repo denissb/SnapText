@@ -6,14 +6,13 @@ import {
   StyleSheet,
   TouchableOpacity,
   Text,
-  Clipboard,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {useTranslation} from 'react-i18next';
 import Icon from 'react-native-vector-icons/Feather';
 
-import {showToast} from '../services/toast';
 import {COLORS} from '../settings';
+import CopyButton from './CopyButton';
 
 type Props = {
   content: String,
@@ -26,13 +25,6 @@ const hitSlop = {
   bottom: 20,
   left: 20,
   right: 20,
-};
-
-const copyToClipboard = (text, msg) => {
-  Clipboard.setString(text);
-  if (msg) {
-    showToast(msg);
-  }
 };
 
 const TextModal: () => React$Node = ({
@@ -63,14 +55,7 @@ const TextModal: () => React$Node = ({
                 style={styles.text}
                 showSoftInputOnFocus={false}
               />
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() =>
-                  copyToClipboard(content, t('text_copied_to_clipboard'))
-                }>
-                <Icon name="copy" size={25} color={COLORS.SECONDARY} />
-                <Text style={styles.buttonText}>{t('copy')}</Text>
-              </TouchableOpacity>
+              <CopyButton content={content} />
             </>
           ) : (
             <Text style={styles.text}>{t('error_in_recognition')}</Text>
@@ -97,22 +82,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color: COLORS.TRINARY,
   },
-  button: {
-    backgroundColor: COLORS.PRIMARY,
-    borderRadius: 10,
-    padding: 10,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   close: {
     alignSelf: 'flex-end',
     marginRight: -8,
-  },
-  buttonText: {
-    color: COLORS.SECONDARY,
-    fontSize: 16,
-    paddingHorizontal: 5,
   },
 });
 

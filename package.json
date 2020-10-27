@@ -1,6 +1,6 @@
 {
   "name": "SnapText",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "private": true,
   "scripts": {
     "android": "adb reverse tcp:8081 tcp:8081 && react-native run-android",
@@ -9,15 +9,16 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint .",
+    "release": "cd android && ./gradlew bundleRelease",
     "postinstall": "npx jetify"
   },
   "dependencies": {
-    "@react-native-community/async-storage": "^1.7.1",
+    "@react-native-community/async-storage": "^1.12.1",
     "i18next": "^19.1.0",
-    "react": "16.9.0",
+    "react": "16.13.1",
     "react-i18next": "^11.3.1",
-    "react-native": "0.61.5",
-    "react-native-camera": "^3.17.0",
+    "react-native": "^0.63.3",
+    "react-native-camera": "^3.40.0",
     "react-native-firebase-mlkit": "^0.6.2",
     "react-native-image-crop-picker": "^0.28.0",
     "react-native-modal": "^11.5.3",
@@ -26,14 +27,14 @@
     "react-native-webview": "^8.1.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.6.2",
-    "@babel/runtime": "^7.6.2",
-    "@react-native-community/eslint-config": "^0.0.5",
-    "babel-jest": "^24.9.0",
+    "@babel/core": "^7.8.4",
+    "@babel/runtime": "^7.8.4",
+    "@react-native-community/eslint-config": "^1.1.0",
+    "babel-jest": "^26.6.1",
     "eslint": "^6.5.1",
-    "jest": "^24.9.0",
-    "metro-react-native-babel-preset": "^0.56.0",
-    "react-test-renderer": "16.9.0"
+    "jest": "^26.6.1",
+    "metro-react-native-babel-preset": "^0.59.0",
+    "react-test-renderer": "16.13.1"
   },
   "jest": {
     "preset": "react-native"
