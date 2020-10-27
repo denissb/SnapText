@@ -27,9 +27,17 @@ type Props = {
   setCrop: Function,
   isReady: Boolean,
   barCodeLink: String,
+  onBarCodeLinkClose: Function,
 };
 
 const isAndroid = Platform.OS === 'android';
+
+const hitSlop = {
+  top: 20,
+  bottom: 20,
+  left: 20,
+  right: 20,
+};
 
 const openLink = (link) => Linking.openURL(link);
 
@@ -40,22 +48,31 @@ const BottomControls: () => React$Node = ({
   setCrop,
   takePicture,
   barCodeLink,
+  onBarCodeLinkClose,
   isReady,
 }: Props) => {
   const {t} = useTranslation();
 
   return (
-    <View>
+    <View style={styles.container}>
       {barCodeLink && (
-        <TouchableOpacity
-          style={styles.linkContainer}
-          onPress={() => openLink(barCodeLink)}>
-          <Text style={styles.linkLabel}>{t('open_link')}</Text>
-          <Text numberOfLines={1} selectable style={styles.linkText}>
-            {barCodeLink}
-          </Text>
-          <CopyButton content={barCodeLink} />
-        </TouchableOpacity>
+        <View style={styles.linkContainer}>
+          <TouchableOpacity
+            style={styles.close}
+            onPress={() => onBarCodeLinkClose()}
+            hitSlop={hitSlop}>
+            <Icon name="x" size={30} color={COLORS.TRINARY} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.linkBody}
+            onPress={() => openLink(barCodeLink)}>
+            <Text style={styles.linkLabel}>{t('open_link')}</Text>
+            <Text numberOfLines={1} selectable style={styles.linkText}>
+              {barCodeLink}
+            </Text>
+            <CopyButton content={barCodeLink} />
+          </TouchableOpacity>
+        </View>
       )}
       <View style={styles.controls}>
         <View style={styles.controlsContainer}>
@@ -118,10 +135,16 @@ const TopControls: () => React$Node = ({openImagePicker}: TopControlProps) => (
 );
 
 const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+  },
   controls: {
     flexDirection: 'row',
     alignSelf: 'stretch',
     paddingBottom: 10,
+  },
+  close: {
+    alignSelf: 'flex-end',
   },
   linkContainer: {
     backgroundColor: COLORS.SECONDARY,
@@ -129,11 +152,14 @@ const styles = StyleSheet.create({
     padding: 12,
     margin: 12,
     alignSelf: 'center',
-    alignItems: 'center',
     maxWidth: 550,
   },
+  linkBody: {
+    alignItems: 'center',
+  },
   linkText: {
-    marginVertical: 8,
+    marginTop: 8,
+    marginBottom: 12,
     color: COLORS.PRIMARY,
     fontSize: 16,
   },
