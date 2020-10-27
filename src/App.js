@@ -89,8 +89,6 @@ const App: () => React$Node = () => {
       } else if (format !== 'None') {
         setCapturedText(data);
         setIsModalVisible(true);
-      } else {
-        setBarCodeLink(undefined);
       }
     });
   };
@@ -148,6 +146,7 @@ const App: () => React$Node = () => {
                 takePicture={() => takePicture(camera, crop)}
                 crop={crop}
                 barCodeLink={barCodeLink}
+                onBarCodeLinkClose={() => setBarCodeLink(undefined)}
                 setCrop={setCrop}
                 setFlash={setFlash}
                 flash={flash}
