@@ -33,9 +33,7 @@ const App: () => React$Node = () => {
   const {t} = useTranslation();
 
   const [isTextRecognised, setIsTextRecognised] = useState(false);
-  const [barCodeLink, setBarCodeLink] = useState(
-    'https://app.bitrise.io/artifact/53894436/p/4233a72474fe99c6ce7bba1588ef1d47',
-  );
+  const [barCodeLink, setBarCodeLink] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [capturedText, setCapturedText] = useState();
   const [flash, setFlash] = useState(false);
