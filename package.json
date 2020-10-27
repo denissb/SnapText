@@ -1,6 +1,6 @@
 {
   "name": "SnapText",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "private": true,
   "scripts": {
     "android": "adb reverse tcp:8081 tcp:8081 && react-native run-android",
@@ -9,6 +9,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint .",
+    "release": "cd android && ./gradlew bundleRelease",
     "postinstall": "npx jetify"
   },
   "dependencies": {
