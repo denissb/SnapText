@@ -7,7 +7,6 @@ import {
   SafeAreaView,
   Platform,
   ActivityIndicator,
-  Linking,
 } from 'react-native';
 import {RNCamera} from 'react-native-camera';
 import {useTranslation} from 'react-i18next';
