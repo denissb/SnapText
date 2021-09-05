@@ -13,6 +13,7 @@
     "postinstall": "npx jetify"
   },
   "dependencies": {
+    "@react-native-firebase/app": "^12.7.5",
     "i18next": "^19.1.0",
     "react": "17.0.2",
     "react-i18next": "^11.11.4",
