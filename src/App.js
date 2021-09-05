@@ -1,5 +1,9 @@
-// @flow
+/**
+ * @format
+ * @flow strict-local
+ */
 import React, {useState, useEffect} from 'react';
+import type {Node} from 'react';
 import {
   StyleSheet,
   StatusBar,
@@ -28,7 +32,7 @@ const Wrapper = Platform.select({
   android: View,
 });
 
-const App: () => React$Node = () => {
+const App: () => Node = () => {
   const {t} = useTranslation();
 
   const [isTextRecognised, setIsTextRecognised] = useState(false);
@@ -47,7 +51,7 @@ const App: () => React$Node = () => {
     setIsTextRecognised(textBlocks.length > 0);
   };
 
-  const onImage = (textInImage) => {
+  const onImage = textInImage => {
     if (textInImage && textInImage.length > 0) {
       setCapturedText(textInImage[0].resultText);
     } else {

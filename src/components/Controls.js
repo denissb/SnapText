@@ -1,5 +1,9 @@
-// @flow
+/**
+ * @format
+ * @flow strict-local
+ */
 import React from 'react';
+import type {Node} from 'react';
 import {
   StyleSheet,
   View,
@@ -39,9 +43,9 @@ const hitSlop = {
   right: 20,
 };
 
-const openLink = (link) => Linking.openURL(link);
+const openLink = link => Linking.openURL(link);
 
-const BottomControls: () => React$Node = ({
+const BottomControls: () => Node = ({
   flash,
   setFlash,
   crop,
