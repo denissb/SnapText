@@ -2,7 +2,7 @@
  * @format
  * @flow strict-local
  */
-import RNMlKit from 'react-native-firebase-mlkit';
+import MlkitOcr from 'react-native-mlkit-ocr';
 
 export const recogniseText = async (imagePath: String) =>
-  RNMlKit.deviceTextRecognition(imagePath);
+  MlkitOcr.detectFromFile(imagePath);

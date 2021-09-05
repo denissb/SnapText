@@ -16,8 +16,6 @@ target 'SnapText' do
     'TextDetector',
     'BarcodeDetectorMLKit'
   ]
-  pod 'Firebase/Analytics'
-  pod 'Firebase/Core'
 
   # you should disable the next line.
   use_flipper!()

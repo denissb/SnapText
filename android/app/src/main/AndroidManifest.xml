@@ -24,11 +24,6 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
       </activity>
-      <!-- To use multiple models, list all needed models: android:value="ocr, face, barcode" -->
-      <meta-data
-        android:name="com.google.firebase.ml.vision.DEPENDENCIES"
-        android:value="ocr" 
-      />
     </application>
 
 </manifest>
