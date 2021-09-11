@@ -1,5 +1,9 @@
-// @flow
-import React, {useState, useEffect} from 'react';
+/**
+ * @format
+ * @flow strict-local
+ */
+import React, {useState, useEffect, useCallback} from 'react';
+import type {Node} from 'react';
 import {
   StyleSheet,
   StatusBar,
@@ -28,7 +32,7 @@ const Wrapper = Platform.select({
   android: View,
 });
 
-const App: () => React$Node = () => {
+const App: () => Node = () => {
   const {t} = useTranslation();
 
   const [isTextRecognised, setIsTextRecognised] = useState(false);
@@ -43,55 +47,60 @@ const App: () => React$Node = () => {
     SplashScreen.hide();
   });
 
-  const onTextRecognized = ({textBlocks}) => {
+  const onTextRecognized = useCallback(({textBlocks}) => {
     setIsTextRecognised(textBlocks.length > 0);
-  };
+  }, []);
 
-  const onImage = (textInImage) => {
-    if (textInImage && textInImage.length > 0) {
-      setCapturedText(textInImage[0].resultText);
+  const onImage = useCallback(textInImage => {
+    if (textInImage) {
+      setCapturedText(textInImage);
     } else {
       setCapturedText(undefined);
     }
     setIsModalVisible(true);
-  };
+  }, []);
 
-  const openImagePicker = async () => {
+  const openImagePicker = useCallback(async () => {
     const image = await openImage(t);
     const textInImage = await recogniseText(image.path);
     onImage(textInImage);
-  };
+  }, [onImage, t]);
 
-  const takePicture = async (camera, cropImage = false) => {
-    const options = {quality: 0.6, base64: true};
-    setIsLoading(true);
-    try {
-      const data = await camera.takePictureAsync(options);
-      let textInImage;
-      if (cropImage) {
-        const cropedImage = await openCropper(data.uri, t);
-        textInImage = await recogniseText(cropedImage.path);
-      } else {
-        textInImage = await recogniseText(data.uri);
+  const takePicture = useCallback(
+    async (camera, cropImage = false) => {
+      const options = {quality: 0.6, base64: true};
+      setIsLoading(true);
+      try {
+        const data = await camera.takePictureAsync(options);
+        let textInImage;
+        if (cropImage) {
+          const croppedImage = await openCropper(data.uri, t);
+          textInImage = await recogniseText(croppedImage.path);
+        } else {
+          textInImage = await recogniseText(data.uri);
+        }
+        onImage(textInImage);
+        setIsLoading(false);
+      } catch (error) {
+        // TODO: log error somewhere...
+        setIsLoading(false);
       }
-      onImage(textInImage);
-      setIsLoading(false);
-    } catch (error) {
-      // TODO: log error somewhere...
-      setIsLoading(false);
+    },
+    [onImage, t],
+  );
+
+  const onBarCodeRead = useCallback(({data}) => {
+    if (!data) {
+      return;
     }
-  };
-
-  const barcodeRecognized = ({barcodes}) => {
-    barcodes.forEach(({type, data, format}) => {
-      if (type === 'URL') {
-        setBarCodeLink(data);
-      } else if (format !== 'None') {
-        setCapturedText(data);
-        setIsModalVisible(true);
-      }
-    });
-  };
+    try {
+      const url = new URL(data);
+      setBarCodeLink(url.href);
+    } catch (e) {
+      setCapturedText(data);
+      setIsModalVisible(true);
+    }
+  }, []);
 
   return (
     <>
@@ -122,7 +131,7 @@ const App: () => React$Node = () => {
             buttonPositive: t('ok'),
             buttonNegative: t('cancel'),
           }}
-          onGoogleVisionBarcodesDetected={barcodeRecognized}>
+          onBarCodeRead={onBarCodeRead}>
           {({camera, status}) => {
             if (status !== 'READY') {
               return <PendingView status={status} />;

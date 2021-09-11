@@ -1,5 +1,9 @@
-// @flow
+/**
+ * @format
+ * @flow strict-local
+ */
 import React from 'react';
+import type {Node} from 'react';
 import {
   View,
   TextInput,
@@ -27,11 +31,7 @@ const hitSlop = {
   right: 20,
 };
 
-const TextModal: () => React$Node = ({
-  content,
-  isVisible,
-  setIsVisible,
-}: Props) => {
+const TextModal: () => Node = ({content, isVisible, setIsVisible}: Props) => {
   const {t} = useTranslation();
 
   return (

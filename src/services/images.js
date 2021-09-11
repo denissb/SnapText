@@ -1,4 +1,7 @@
-// @flow
+/**
+ * @format
+ * @flow strict-local
+ */
 import ImagePicker from 'react-native-image-crop-picker';
 import {COLORS} from '../settings';
 
@@ -17,7 +20,7 @@ export const openCropper = async (uri, t) =>
     ...CROPPER_SETTINGS,
   });
 
-export const openImage = async (t) =>
+export const openImage = async t =>
   ImagePicker.openPicker({
     cropping: true,
     cropperToolbarTitle: t('choose_capture_area'),

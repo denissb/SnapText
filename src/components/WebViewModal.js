@@ -1,5 +1,9 @@
-//@flow
+/**
+ * @format
+ * @flow strict-local
+ */
 import React from 'react';
+import type {Node} from 'react';
 import {Modal, TouchableOpacity, StyleSheet} from 'react-native';
 import {WebView} from 'react-native-webview';
 import Icon from 'react-native-vector-icons/Feather';
@@ -11,11 +15,7 @@ type Props = {
   visible: Boolean,
 };
 
-const WebViewModal: () => React$Node = ({
-  source,
-  visible,
-  setIsVisible,
-}: Props) => {
+const WebViewModal: () => Node = ({source, visible, setIsVisible}: Props) => {
   return (
     <Modal
       animationType="slide"

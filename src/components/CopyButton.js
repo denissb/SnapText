@@ -1,5 +1,9 @@
-// @flow
+/**
+ * @format
+ * @flow strict-local
+ */
 import React from 'react';
+import type {Node} from 'react';
 import {Clipboard, TouchableOpacity, Text, StyleSheet} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import Icon from 'react-native-vector-icons/Feather';
@@ -17,7 +21,7 @@ const copyToClipboard = (text, msg) => {
   }
 };
 
-export const CopyButton: () => React$Node = ({content}: Props) => {
+export const CopyButton: () => Node = ({content}: Props) => {
   const {t} = useTranslation();
 
   return (

@@ -18,6 +18,7 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* SnapTextTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* SnapTextTests.m */; };
 		39D114350A7BFA0851471FF1 /* libPods-SnapText-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FF3F8CB15856A547D1B368F /* libPods-SnapText-tvOS.a */; };
+		AC225BF626E4E8F100B1F02E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AC225BF526E4E8F100B1F02E /* GoogleService-Info.plist */; };
 		B8F2CDA542C062E7AB35F77A /* libPods-SnapText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B1EF001DF873589A7269BF /* libPods-SnapText.a */; };
 		F63A076723E5CDCA00C96F52 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F63A076423E5CDCA00C96F52 /* Feather.ttf */; };
 		F63A076923E5CDCA00C96F52 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F63A076523E5CDCA00C96F52 /* MaterialIcons.ttf */; };
@@ -65,6 +66,7 @@
 		6949CDACA8528892184AFB31 /* libPods-SnapTextTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SnapTextTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		71D769FEA965EC51BB446ABA /* Pods-SnapTextTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapTextTests.release.xcconfig"; path = "Target Support Files/Pods-SnapTextTests/Pods-SnapTextTests.release.xcconfig"; sourceTree = "<group>"; };
 		7FF3F8CB15856A547D1B368F /* libPods-SnapText-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SnapText-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC225BF526E4E8F100B1F02E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B5B1EF001DF873589A7269BF /* libPods-SnapText.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SnapText.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D15A209F486E00D09D3055C9 /* Pods-SnapText-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapText-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-SnapText-tvOSTests/Pods-SnapText-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -181,6 +183,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				AC225BF526E4E8F100B1F02E /* GoogleService-Info.plist */,
 				F63A076A23E5CE6D00C96F52 /* fonts */,
 				13B07FAE1A68108700A75B9A /* SnapText */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -357,6 +360,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				AC225BF626E4E8F100B1F02E /* GoogleService-Info.plist in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				F6CBED53234D178F00B39848 /* GoogleService-Info.plist in Resources */,
 			);
@@ -705,7 +709,7 @@
 				DEAD_CODE_STRIPPING = NO;
 				INFOPLIST_FILE = SnapText/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.2.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -725,7 +729,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = SnapText/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.2.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

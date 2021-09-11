@@ -1,5 +1,9 @@
-// @flow
+/**
+ * @format
+ * @flow strict-local
+ */
 import React, {useState} from 'react';
+import type {Node} from 'react';
 import {StyleSheet, View, TouchableOpacity, Text, Linking} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import {COLORS, LINKS} from '../settings';
@@ -7,7 +11,7 @@ import {useTranslation} from 'react-i18next';
 import WebViewModal from './WebViewModal';
 import policyContent from '../assets/html/policy';
 
-const openLink = async (link) => {
+const openLink = async link => {
   try {
     await Linking.openURL(link);
   } catch (err) {
@@ -15,7 +19,7 @@ const openLink = async (link) => {
   }
 };
 
-const Menu: () => React$Node = () => {
+const Menu: () => Node = () => {
   const {t} = useTranslation();
 
   const [opened, setIsOpened] = useState(false);

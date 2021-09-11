@@ -13,7 +13,7 @@ export const setup = () => {
   const languageDetector = {
     type: 'languageDetector',
     async: true,
-    detect: (cb) => {
+    detect: cb => {
       const language = Platform.select({
         ios: () => NativeModules.SettingsManager.settings.AppleLocale,
         android: () => NativeModules.I18nManager.localeIdentifier,
