@@ -58,6 +58,7 @@ GoogleService-Info.plist
 
 # Bundle artifact
 *.jsbundle
+*.jsbundle.map
 
 # CocoaPods
 /ios/Pods/
