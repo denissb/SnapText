@@ -1,9 +1,4 @@
-/**
- * @format
- * @flow strict-local
- */
 import React, {useState} from 'react';
-import type {Node} from 'react';
 import {StyleSheet, View, TouchableOpacity, Text, Linking} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import {COLORS, LINKS} from '../settings';
@@ -11,7 +6,7 @@ import {useTranslation} from 'react-i18next';
 import WebViewModal from './WebViewModal';
 import policyContent from '../assets/html/policy';
 
-const openLink = async link => {
+const openLink = async (link: string) => {
   try {
     await Linking.openURL(link);
   } catch (err) {
@@ -19,16 +14,13 @@ const openLink = async link => {
   }
 };
 
-const Menu: () => Node = () => {
+const Menu: React.FC = () => {
   const {t} = useTranslation();
-
   const [opened, setIsOpened] = useState(false);
   const [policyModalVisible, setPolicyModalVisible] = useState(false);
-
   const hamburgerSyles = opened
     ? [styles.hamburger, styles.hamburgerOpened]
     : styles.hamburger;
-
   return (
     <>
       <TouchableOpacity
@@ -104,5 +96,4 @@ const styles = StyleSheet.create({
     width: '100%',
   },
 });
-
 export default Menu;

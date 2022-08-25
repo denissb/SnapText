@@ -1,9 +1,4 @@
-/**
- * @format
- * @flow strict-local
- */
 import React from 'react';
-import type {Node} from 'react';
 import {
   StyleSheet,
   View,
@@ -16,26 +11,22 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import {useTranslation} from 'react-i18next';
-
 import Menu from './Menu';
 import CopyButton from './CopyButton';
-
 import {showToast} from '../services/toast';
 import {COLORS} from '../settings';
 
 type Props = {
-  flash: boolean,
-  setFlash: Boolean,
-  crop: Boolean,
-  takePicture: Function,
-  setCrop: Function,
-  isReady: Boolean,
-  barCodeLink: String,
-  onBarCodeLinkClose: Function,
+  flash: boolean;
+  setFlash: (value: boolean) => void;
+  crop: boolean;
+  takePicture: (...args: Array<any>) => any;
+  setCrop: (...args: Array<any>) => any;
+  isReady: boolean;
+  barCodeLink?: string;
+  onBarCodeLinkClose: (...args: Array<any>) => any;
 };
-
 const isAndroid = Platform.OS === 'android';
-
 const hitSlop = {
   top: 20,
   bottom: 20,
@@ -43,9 +34,9 @@ const hitSlop = {
   right: 20,
 };
 
-const openLink = link => Linking.openURL(link);
+const openLink = (link: string) => Linking.openURL(link);
 
-const BottomControls: () => Node = ({
+const BottomControls: React.FC<Props> = ({
   flash,
   setFlash,
   crop,
@@ -56,7 +47,6 @@ const BottomControls: () => Node = ({
   isReady,
 }: Props) => {
   const {t} = useTranslation();
-
   return (
     <View style={styles.container}>
       {barCodeLink && (
@@ -86,7 +76,11 @@ const BottomControls: () => Node = ({
               value={flash}
               onValueChange={setFlash}
               thumbColor={
-                isAndroid && (flash ? COLORS.PRIMARY : COLORS.SECONDARY)
+                isAndroid
+                  ? flash
+                    ? COLORS.PRIMARY
+                    : COLORS.SECONDARY
+                  : undefined
               }
               style={styles.switch}
             />
@@ -110,7 +104,11 @@ const BottomControls: () => Node = ({
               value={crop}
               onValueChange={setCrop}
               thumbColor={
-                isAndroid && (crop ? COLORS.PRIMARY : COLORS.SECONDARY)
+                isAndroid
+                  ? crop
+                    ? COLORS.PRIMARY
+                    : COLORS.SECONDARY
+                  : undefined
               }
               style={styles.switch}
             />
@@ -122,10 +120,10 @@ const BottomControls: () => Node = ({
 };
 
 type TopControlProps = {
-  openImagePicker: Function,
+  openImagePicker: (...args: Array<any>) => any;
 };
 
-const TopControls: () => React$Node = ({openImagePicker}: TopControlProps) => (
+const TopControls: React.FC<TopControlProps> = ({openImagePicker}) => (
   <View style={styles.topControls}>
     <Menu />
     <TouchableOpacity
@@ -217,7 +215,5 @@ const styles = StyleSheet.create({
     marginHorizontal: 22,
   },
 });
-
 export default BottomControls;
-
 export {TopControls};

@@ -7,8 +7,8 @@
     "ios": "react-native run-ios --simulator=\"iPhone 11\"",
     "start": "react-native rnx-start",
     "bundle": "yarn bundle:ios && yarn bundle:android",
-    "bundle:ios": "react-native rnx-bundle --platform ios --entry-file index.tsx",
-    "bundle:android": "react-native rnx-bundle --platform android --entry-file index.tsx",
+    "bundle:ios": "react-native rnx-bundle --platform ios --entry-file index.ts",
+    "bundle:android": "react-native rnx-bundle --platform android --entry-file index.ts",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint .",
@@ -18,14 +18,16 @@
     "fix-dependencies": "rnx-dep-check --vigilant 0.65.1 --write"
   },
   "dependencies": {
+    "@react-native-community/clipboard": "^1.5.1",
     "@react-native-firebase/app": "^12.7.5",
+    "@types/react-native-vector-icons": "^6.4.11",
     "i18next": "^19.1.0",
     "react": "17.0.2",
     "react-i18next": "^11.11.4",
     "react-native": "^0.65.0",
-    "react-native-camera": "^4.1.1",
+    "react-native-camera": "^4.2.1",
     "react-native-image-crop-picker": "^0.36.2",
-    "react-native-mlkit-ocr": "^0.2.2",
+    "react-native-mlkit-ocr": "^0.2.5",
     "react-native-modal": "^13.0.0",
     "react-native-splash-screen": "^3.2.0",
     "react-native-vector-icons": "^8.1.0",
@@ -57,7 +59,9 @@
   "rnx-kit": {
     "bundle": {
       "detectDuplicateDependencies": {
-        "ignoredModules": ["react-is"]
+        "ignoredModules": [
+          "react-is"
+        ]
       },
       "platforms": {
         "ios": {
@@ -68,12 +72,12 @@
           "bundleOutput": "android/main.jsbundle",
           "sourcemapOutput": "android/main.jsbundle.map"
         }
-      }
+      },
+      "treeShake": true
     },
     "reactNativeVersion": "^0.65",
     "kitType": "app",
     "typescriptValidation": false,
-    "treeShake": true,
     "capabilities": [
       "babel-preset-react-native",
       "core",

@@ -1,29 +1,25 @@
-/**
- * @format
- * @flow strict-local
- */
 import React from 'react';
-import type {Node} from 'react';
-import {Clipboard, TouchableOpacity, Text, StyleSheet} from 'react-native';
+import {TouchableOpacity, Text, StyleSheet} from 'react-native';
+import Clipboard from '@react-native-community/clipboard';
 import {useTranslation} from 'react-i18next';
 import Icon from 'react-native-vector-icons/Feather';
 import {COLORS} from '../settings';
 import {showToast} from '../services/toast';
 
 type Props = {
-  content: String,
+  content: string;
 };
 
-const copyToClipboard = (text, msg) => {
+const copyToClipboard = (text: string, msg: string) => {
   Clipboard.setString(text);
+
   if (msg) {
     showToast(msg);
   }
 };
 
-export const CopyButton: () => Node = ({content}: Props) => {
+export const CopyButton: React.FC<Props> = ({content}: Props) => {
   const {t} = useTranslation();
-
   return (
     <TouchableOpacity
       style={styles.button}
@@ -33,7 +29,6 @@ export const CopyButton: () => Node = ({content}: Props) => {
     </TouchableOpacity>
   );
 };
-
 const styles = StyleSheet.create({
   button: {
     backgroundColor: COLORS.PRIMARY,
@@ -49,5 +44,4 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
   },
 });
-
 export default CopyButton;

@@ -1,9 +1,4 @@
-/**
- * @format
- * @flow strict-local
- */
-import React, {useState, useEffect, useCallback} from 'react';
-import type {Node} from 'react';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
 import {
   StyleSheet,
   StatusBar,
@@ -12,14 +7,16 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
-import {RNCamera} from 'react-native-camera';
+import {
+  RNCamera,
+  TrackedTextFeature,
+  BarCodeReadEvent,
+} from 'react-native-camera';
 import {useTranslation} from 'react-i18next';
 import SplashScreen from 'react-native-splash-screen';
-
 import {setup} from './services/i18n';
 import {openCropper, openImage} from './services/images';
 import {recogniseText} from './services/textDetector';
-
 import BottomControls, {TopControls} from './components/Controls';
 import TextModal from './components/TextModal';
 import PendingView from './components/PendingView';
@@ -27,36 +24,37 @@ import {COLORS} from './settings';
 
 setup();
 
-const Wrapper = Platform.select({
-  ios: SafeAreaView,
-  android: View,
-});
+const Wrapper = Platform.OS === 'ios' ? SafeAreaView : View;
 
-const App: () => Node = () => {
+const App: React.FC = () => {
   const {t} = useTranslation();
-
   const [isTextRecognised, setIsTextRecognised] = useState(false);
-  const [barCodeLink, setBarCodeLink] = useState(undefined);
+  const [status, setStatus] = useState<string>('');
+  const [barCodeLink, setBarCodeLink] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
-  const [capturedText, setCapturedText] = useState();
+  const [capturedText, setCapturedText] = useState<string>();
   const [flash, setFlash] = useState(false);
   const [crop, setCrop] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
-
+  const cameraRef = useRef<RNCamera>(null);
   useEffect(() => {
     SplashScreen.hide();
   });
 
-  const onTextRecognized = useCallback(({textBlocks}) => {
-    setIsTextRecognised(textBlocks.length > 0);
-  }, []);
+  const onTextRecognized = useCallback(
+    ({textBlocks}: {textBlocks: TrackedTextFeature[]}) => {
+      setIsTextRecognised(textBlocks.length > 0);
+    },
+    [],
+  );
 
-  const onImage = useCallback(textInImage => {
+  const onImage = useCallback((textInImage: string) => {
     if (textInImage) {
       setCapturedText(textInImage);
     } else {
       setCapturedText(undefined);
     }
+
     setIsModalVisible(true);
   }, []);
 
@@ -67,18 +65,28 @@ const App: () => Node = () => {
   }, [onImage, t]);
 
   const takePicture = useCallback(
-    async (camera, cropImage = false) => {
-      const options = {quality: 0.6, base64: true};
+    async (camera: RNCamera | null, cropImage = false) => {
+      if (!camera) {
+        return;
+      }
+
+      const options = {
+        quality: 0.6,
+        base64: true,
+      };
       setIsLoading(true);
+
       try {
         const data = await camera.takePictureAsync(options);
         let textInImage;
+
         if (cropImage) {
           const croppedImage = await openCropper(data.uri, t);
           textInImage = await recogniseText(croppedImage.path);
         } else {
           textInImage = await recogniseText(data.uri);
         }
+
         onImage(textInImage);
         setIsLoading(false);
       } catch (error) {
@@ -88,11 +96,11 @@ const App: () => Node = () => {
     },
     [onImage, t],
   );
-
-  const onBarCodeRead = useCallback(({data}) => {
+  const onBarCodeRead = useCallback(({data}: BarCodeReadEvent) => {
     if (!data) {
       return;
     }
+
     try {
       const url = new URL(data);
       setBarCodeLink(url.href);
@@ -101,6 +109,39 @@ const App: () => Node = () => {
       setIsModalVisible(true);
     }
   }, []);
+
+  const renderContents = (
+    cameraStatus: string,
+    isLoadingCamera: boolean,
+    camera: RNCamera | null,
+  ) => {
+    if (cameraStatus !== 'READY') {
+      return <PendingView status={status} />;
+    }
+
+    if (isLoadingCamera) {
+      return (
+        <View style={styles.loadingOverlay}>
+          <ActivityIndicator size="large" color={COLORS.SECONDARY} />
+        </View>
+      );
+    }
+
+    return [
+      <TopControls openImagePicker={openImagePicker} key="topControls" />,
+      <BottomControls
+        key="bottomControls"
+        takePicture={() => takePicture(camera, crop)}
+        crop={crop}
+        barCodeLink={barCodeLink}
+        onBarCodeLinkClose={() => setBarCodeLink(undefined)}
+        setCrop={setCrop}
+        setFlash={setFlash}
+        flash={flash}
+        isReady={isTextRecognised}
+      />,
+    ];
+  };
 
   return (
     <>
@@ -131,38 +172,12 @@ const App: () => Node = () => {
             buttonPositive: t('ok'),
             buttonNegative: t('cancel'),
           }}
-          onBarCodeRead={onBarCodeRead}>
-          {({camera, status}) => {
-            if (status !== 'READY') {
-              return <PendingView status={status} />;
-            }
-
-            if (isLoading) {
-              return (
-                <View style={styles.loadingOverlay}>
-                  <ActivityIndicator size="large" color={COLORS.SECONDARY} />
-                </View>
-              );
-            }
-
-            return [
-              <TopControls
-                openImagePicker={openImagePicker}
-                key="topControls"
-              />,
-              <BottomControls
-                key="bottomControls"
-                takePicture={() => takePicture(camera, crop)}
-                crop={crop}
-                barCodeLink={barCodeLink}
-                onBarCodeLinkClose={() => setBarCodeLink(undefined)}
-                setCrop={setCrop}
-                setFlash={setFlash}
-                flash={flash}
-                isReady={isTextRecognised}
-              />,
-            ];
-          }}
+          onBarCodeRead={onBarCodeRead}
+          ref={cameraRef}
+          onStatusChange={currentStatus =>
+            setStatus(currentStatus.cameraStatus)
+          }>
+          {renderContents(status, isLoading, cameraRef.current)}
         </RNCamera>
       </Wrapper>
     </>

@@ -78,6 +78,7 @@ import com.android.build.OutputFile
 
 project.ext.react = [
     enableHermes: true,  // clean and rebuild if changing
+    entryFile: "index.ts"
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -130,6 +131,7 @@ android {
         applicationId "org.denissb.snaptext"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
+        compileSdkVersion rootProject.ext.compileSdkVersion
         versionCode 9
         versionName "1.2.2"
         missingDimensionStrategy 'react-native-camera', 'mlkit'

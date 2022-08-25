@@ -89,31 +89,6 @@ export default `
         <!---->
         <li><a href="https://firebase.google.com/policies/analytics" target="_blank" rel="noopener noreferrer">Google
             Analytics for Firebase</a></li>
-        <!---->
-        <!---->
-        <!---->
-        <!---->
-        <!---->
-        <!---->
-        <!---->
-        <!---->
-        <!---->
-        <!---->
-        <!---->
-        <!---->
-        <!---->
-        <!---->
-        <!---->
-        <!---->
-        <!---->
-        <!---->
-        <!---->
-        <!---->
-        <!---->
-        <!---->
-        <!---->
-        <!---->
-        <!---->
       </ul>
     </div>
     <p><strong>Log Data</strong></p>

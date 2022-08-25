@@ -2,14 +2,12 @@ import React from 'react';
 import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {COLORS} from '../settings';
-
 type Props = {
-  status: String,
+  status: string;
 };
 
-const PendingView = ({status}: Props) => {
+const PendingView: React.FC<Props> = ({status}: Props) => {
   const {t} = useTranslation();
-
   let msg;
 
   if (status === 'NOT_AUTHORIZED') {
@@ -40,5 +38,4 @@ const styles = StyleSheet.create({
     color: COLORS.SECONDARY,
   },
 });
-
 export default PendingView;
