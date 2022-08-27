@@ -71,6 +71,10 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
     backgroundColor: COLORS.SECONDARY,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderLeftWidth: StyleSheet.hairlineWidth,
+    borderRightWidth: StyleSheet.hairlineWidth,
+    borderColor: COLORS.TRINARY,
   },
   menu: {
     position: 'absolute',
@@ -80,6 +84,8 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 10,
     backgroundColor: COLORS.SECONDARY,
     minWidth: 190,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: COLORS.TRINARY,
   },
   menuItem: {
     paddingHorizontal: 10,

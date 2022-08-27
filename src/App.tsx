@@ -14,12 +14,11 @@ import SplashScreen from 'react-native-splash-screen';
 import {setup as i18nSetup} from './services/i18n';
 import {openCropper, openImage} from './services/images';
 import {recogniseText} from './services/textDetector';
-import BottomControls, {TopControls} from './components/Controls';
+import {TopControls} from './components/Controls';
 import TextModal from './components/TextModal';
 import Camera from './components/Camera';
 import PendingView from './components/PendingView';
 import {COLORS} from './settings';
-import useVisionCamera from './hooks/useVisionCamera';
 
 const Wrapper = Platform.OS === 'ios' ? SafeAreaView : View;
 
@@ -28,14 +27,10 @@ i18nSetup();
 const App: React.FC = () => {
   const {t} = useTranslation();
   const [isTextRecognised, setIsTextRecognised] = useState(false);
-  const [status, setStatus] = useState<string>('');
   const [barCodeLink, setBarCodeLink] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [capturedText, setCapturedText] = useState<string>();
-  const [flash, setFlash] = useState(false);
-  const [crop, setCrop] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const {cameraPermission, errorMsg} = useVisionCamera();
 
   // const cameraRef = useRef<RNCamera>(null);
   useEffect(() => {
@@ -48,22 +43,6 @@ const App: React.FC = () => {
   //   },
   //   [],
   // );
-
-  const onImage = useCallback((textInImage: string) => {
-    if (textInImage) {
-      setCapturedText(textInImage);
-    } else {
-      setCapturedText(undefined);
-    }
-
-    setIsModalVisible(true);
-  }, []);
-
-  // const openImagePicker = useCallback(async () => {
-  //   const image = await openImage(t);
-  //   const textInImage = await recogniseText(image.path);
-  //   onImage(textInImage);
-  // }, [onImage, t]);
 
   // const takePicture = useCallback(
   //   async (camera: RNCamera | null, cropImage = false) => {
@@ -145,14 +124,6 @@ const App: React.FC = () => {
   //   ];
   // };
 
-  const renderContents = (permission?: CameraPermissionStatus) => {
-    if (permission !== 'authorized') {
-      return <PendingView status={permission} />;
-    }
-
-    return <Camera />;
-  };
-
   return (
     <>
       <StatusBar
@@ -166,7 +137,7 @@ const App: React.FC = () => {
         content={capturedText}
       />
       <Wrapper style={styles.container}>
-        {renderContents(cameraPermission)}
+        <Camera />
         {/* <RNCamera
           style={styles.preview}
           captureAudio={false}

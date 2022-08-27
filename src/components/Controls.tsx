@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignSelf: 'stretch',
-    marginTop: StatusBar.currentHeight ? StatusBar.currentHeight + 16 : 20,
+    marginTop: StatusBar.currentHeight ? StatusBar.currentHeight + 25 : 25,
     marginHorizontal: 22,
   },
 });
