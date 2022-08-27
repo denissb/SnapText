@@ -5,4 +5,5 @@ module.exports = {
       {disableImportExportTransform: true},
     ],
   ],
+  plugins: ['react-native-reanimated/plugin'],
 };

@@ -1,16 +1,18 @@
 import React from 'react';
+import {CameraPermissionStatus} from 'react-native-vision-camera';
 import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {COLORS} from '../settings';
+
 type Props = {
-  status: string;
+  status?: CameraPermissionStatus;
 };
 
 const PendingView: React.FC<Props> = ({status}: Props) => {
   const {t} = useTranslation();
   let msg;
 
-  if (status === 'NOT_AUTHORIZED') {
+  if (status === 'denied') {
     msg = t('camera_not_authorized_text');
   }
 

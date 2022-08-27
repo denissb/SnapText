@@ -7,24 +7,23 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
-import {
-  RNCamera,
-  TrackedTextFeature,
-  BarCodeReadEvent,
-} from 'react-native-camera';
+import {CameraPermissionStatus} from 'react-native-vision-camera';
+
 import {useTranslation} from 'react-i18next';
 import SplashScreen from 'react-native-splash-screen';
-import {setup} from './services/i18n';
+import {setup as i18nSetup} from './services/i18n';
 import {openCropper, openImage} from './services/images';
 import {recogniseText} from './services/textDetector';
 import BottomControls, {TopControls} from './components/Controls';
 import TextModal from './components/TextModal';
+import Camera from './components/Camera';
 import PendingView from './components/PendingView';
 import {COLORS} from './settings';
-
-setup();
+import useVisionCamera from './hooks/useVisionCamera';
 
 const Wrapper = Platform.OS === 'ios' ? SafeAreaView : View;
+
+i18nSetup();
 
 const App: React.FC = () => {
   const {t} = useTranslation();
@@ -36,17 +35,19 @@ const App: React.FC = () => {
   const [flash, setFlash] = useState(false);
   const [crop, setCrop] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const cameraRef = useRef<RNCamera>(null);
+  const {cameraPermission, errorMsg} = useVisionCamera();
+
+  // const cameraRef = useRef<RNCamera>(null);
   useEffect(() => {
     SplashScreen.hide();
-  });
+  }, []);
 
-  const onTextRecognized = useCallback(
-    ({textBlocks}: {textBlocks: TrackedTextFeature[]}) => {
-      setIsTextRecognised(textBlocks.length > 0);
-    },
-    [],
-  );
+  // const onTextRecognized = useCallback(
+  //   ({textBlocks}: {textBlocks: TrackedTextFeature[]}) => {
+  //     setIsTextRecognised(textBlocks.length > 0);
+  //   },
+  //   [],
+  // );
 
   const onImage = useCallback((textInImage: string) => {
     if (textInImage) {
@@ -58,89 +59,98 @@ const App: React.FC = () => {
     setIsModalVisible(true);
   }, []);
 
-  const openImagePicker = useCallback(async () => {
-    const image = await openImage(t);
-    const textInImage = await recogniseText(image.path);
-    onImage(textInImage);
-  }, [onImage, t]);
+  // const openImagePicker = useCallback(async () => {
+  //   const image = await openImage(t);
+  //   const textInImage = await recogniseText(image.path);
+  //   onImage(textInImage);
+  // }, [onImage, t]);
 
-  const takePicture = useCallback(
-    async (camera: RNCamera | null, cropImage = false) => {
-      if (!camera) {
-        return;
-      }
+  // const takePicture = useCallback(
+  //   async (camera: RNCamera | null, cropImage = false) => {
+  //     if (!camera) {
+  //       return;
+  //     }
 
-      const options = {
-        quality: 0.6,
-        base64: true,
-      };
-      setIsLoading(true);
+  //     const options = {
+  //       quality: 0.6,
+  //       base64: true,
+  //     };
+  //     setIsLoading(true);
 
-      try {
-        const data = await camera.takePictureAsync(options);
-        let textInImage;
+  //     try {
+  //       const data = await camera.takePictureAsync(options);
+  //       let textInImage;
 
-        if (cropImage) {
-          const croppedImage = await openCropper(data.uri, t);
-          textInImage = await recogniseText(croppedImage.path);
-        } else {
-          textInImage = await recogniseText(data.uri);
-        }
+  //       if (cropImage) {
+  //         const croppedImage = await openCropper(data.uri, t);
+  //         textInImage = await recogniseText(croppedImage.path);
+  //       } else {
+  //         textInImage = await recogniseText(data.uri);
+  //       }
 
-        onImage(textInImage);
-        setIsLoading(false);
-      } catch (error) {
-        // TODO: log error somewhere...
-        setIsLoading(false);
-      }
-    },
-    [onImage, t],
-  );
-  const onBarCodeRead = useCallback(({data}: BarCodeReadEvent) => {
-    if (!data) {
-      return;
+  //       onImage(textInImage);
+  //       setIsLoading(false);
+  //     } catch (error) {
+  //       // TODO: log error somewhere...
+  //       setIsLoading(false);
+  //     }
+  //   },
+  //   [onImage, t],
+  // );
+
+  // const onBarCodeRead = useCallback(({data}: BarCodeReadEvent) => {
+  //   if (!data) {
+  //     return;
+  //   }
+
+  //   try {
+  //     const url = new URL(data);
+  //     setBarCodeLink(url.href);
+  //   } catch (e) {
+  //     setCapturedText(data);
+  //     setIsModalVisible(true);
+  //   }
+  // }, []);
+
+  // const renderContents = (
+  //   cameraStatus: string,
+  //   isLoadingCamera: boolean,
+  //   camera: RNCamera | null,
+  // ) => {
+  //   if (cameraStatus !== 'READY') {
+  //     return <PendingView status={status} />;
+  //   }
+
+  //   if (isLoadingCamera) {
+  //     return (
+  //       <View style={styles.loadingOverlay}>
+  //         <ActivityIndicator size="large" color={COLORS.SECONDARY} />
+  //       </View>
+  //     );
+  //   }
+
+  //   return [
+  //     <TopControls openImagePicker={openImagePicker} key="topControls" />,
+  //     <BottomControls
+  //       key="bottomControls"
+  //       takePicture={() => takePicture(camera, crop)}
+  //       crop={crop}
+  //       barCodeLink={barCodeLink}
+  //       onBarCodeLinkClose={() => setBarCodeLink(undefined)}
+  //       setCrop={setCrop}
+  //       setFlash={setFlash}
+  //       flash={flash}
+  //       isReady={isTextRecognised}
+  //     />,
+  //   ];
+  // };
+
+  const renderContents = (permission?: CameraPermissionStatus) => {
+    if (permission !== 'authorized') {
+      return <PendingView status={permission} />;
     }
 
-    try {
-      const url = new URL(data);
-      setBarCodeLink(url.href);
-    } catch (e) {
-      setCapturedText(data);
-      setIsModalVisible(true);
-    }
-  }, []);
-
-  const renderContents = (
-    cameraStatus: string,
-    isLoadingCamera: boolean,
-    camera: RNCamera | null,
-  ) => {
-    if (cameraStatus !== 'READY') {
-      return <PendingView status={status} />;
-    }
-
-    if (isLoadingCamera) {
-      return (
-        <View style={styles.loadingOverlay}>
-          <ActivityIndicator size="large" color={COLORS.SECONDARY} />
-        </View>
-      );
-    }
-
-    return [
-      <TopControls openImagePicker={openImagePicker} key="topControls" />,
-      <BottomControls
-        key="bottomControls"
-        takePicture={() => takePicture(camera, crop)}
-        crop={crop}
-        barCodeLink={barCodeLink}
-        onBarCodeLinkClose={() => setBarCodeLink(undefined)}
-        setCrop={setCrop}
-        setFlash={setFlash}
-        flash={flash}
-        isReady={isTextRecognised}
-      />,
-    ];
+    return <Camera />;
   };
 
   return (
@@ -156,7 +166,8 @@ const App: React.FC = () => {
         content={capturedText}
       />
       <Wrapper style={styles.container}>
-        <RNCamera
+        {renderContents(cameraPermission)}
+        {/* <RNCamera
           style={styles.preview}
           captureAudio={false}
           type={RNCamera.Constants.Type.back}
@@ -178,7 +189,7 @@ const App: React.FC = () => {
             setStatus(currentStatus.cameraStatus)
           }>
           {renderContents(status, isLoading, cameraRef.current)}
-        </RNCamera>
+        </RNCamera> */}
       </Wrapper>
     </>
   );
