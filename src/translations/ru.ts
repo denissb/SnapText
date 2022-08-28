@@ -15,4 +15,5 @@ export default {
   privacy_policy_label: 'Политика конфиденциальности',
   source_code_label: 'Исходный код',
   open_link: 'Открыть ссылку',
+  open_settings: 'Открыть настройки',
 };

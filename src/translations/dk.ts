@@ -14,4 +14,5 @@ export default {
   privacy_policy_label: 'Fortrolighedspolitik',
   source_code_label: 'Kildekode',
   open_link: 'Aben link',
+  open_settings: 'Åbn Indstillinger',
 };
