@@ -1,9 +1,13 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
+import {runOnJS} from 'react-native-reanimated';
 import {StyleSheet, View} from 'react-native';
 import {
   Camera as RNVCamera,
   useCameraDevices,
+  useFrameProcessor,
 } from 'react-native-vision-camera';
+import {scanBarcodes, BarcodeFormat} from 'vision-camera-code-scanner';
+// import {scanOCR} from 'vision-camera-ocr';
 import PendingView from './PendingView';
 import BottomControls, {TopControls} from './Controls';
 import {recogniseText} from '../services/textDetector';
@@ -14,6 +18,7 @@ import useVisionCamera from '../hooks/useVisionCamera';
 const Camera = () => {
   const [crop, setCrop] = useState(true);
   const [flash, setFlash] = useState(false);
+  const [barcodeValue, setBarcodeValue] = useState<string>();
   const [capturedText, setCapturedText] = useState<string>();
   const [barCodeLink, setBarCodeLink] = useState<string | undefined>(undefined);
   const [isTextRecognised, setIsTextRecognised] = useState(false);
@@ -21,7 +26,7 @@ const Camera = () => {
   const {cameraPermission, errorMsg} = useVisionCamera();
   const {t} = useTranslation();
   const devices = useCameraDevices();
-  const device = devices.front;
+  const device = devices.back;
 
   const onImage = useCallback((textInImage: string) => {
     if (textInImage) {
@@ -33,11 +38,47 @@ const Camera = () => {
     setIsModalVisible(true);
   }, []);
 
+  // const [frameProcessor, barcodes] = useScanBarcodes([BarcodeFormat.QR_CODE], {
+  //   checkInverted: true,
+  // });
+
+  const frameProcessor = useFrameProcessor(frame => {
+    'worklet';
+    // const data = scanOCR(frame);
+    // if (data.result) {
+    //   //runOnJS(setIsTextRecognised)(true);
+    // }
+    const detectedBarcodes = scanBarcodes(frame, [BarcodeFormat.ALL_FORMATS]);
+    if (!detectedBarcodes || detectedBarcodes.length === 0) {
+      return;
+    }
+    const barcodeValue = detectedBarcodes[0]?.displayValue;
+    if (!barcodeValue) {
+      return;
+    }
+
+    runOnJS(setBarcodeValue)(barcodeValue);
+  }, []);
+
+  useEffect(() => {
+    if (!barcodeValue) {
+      return;
+    }
+
+    try {
+      const url = new URL(barcodeValue);
+      setBarCodeLink(url.href);
+    } catch (e) {
+      setCapturedText(barcodeValue);
+      setIsModalVisible(true);
+    }
+  }, [barcodeValue]);
+
   const openImagePicker = useCallback(async () => {
     try {
       const image = await openImage(t);
       const textInImage = await recogniseText(image.path);
-      onImage(textInImage);
+      // onImage(textInImage);
     } catch (e) {}
   }, [onImage, t]);
 
@@ -47,7 +88,13 @@ const Camera = () => {
 
   return (
     <>
-      <RNVCamera device={device} isActive={true} style={styles.main} />
+      <RNVCamera
+        device={device}
+        isActive={true}
+        style={styles.main}
+        frameProcessor={frameProcessor}
+        frameProcessorFps={5}
+      />
       <View style={styles.controlsWrapper}>
         <TopControls openImagePicker={openImagePicker} key="topControls" />
         <BottomControls

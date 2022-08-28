@@ -6309,11 +6309,6 @@ react-native-image-crop-picker@^0.36.2:
   resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.36.4.tgz#13a659fc296bea695a88a36de9eacd1e4aebc9b8"
   integrity sha512-FOWkYbCEh78V5/aK9HqMSvRnQJtelGwj0UOu1zhE49gO6e4YoKKNBvA15jweAMM/kPA+omDXBIgJaruonoEXGA==
 
-react-native-mlkit-ocr@^0.2.5:
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/react-native-mlkit-ocr/-/react-native-mlkit-ocr-0.2.5.tgz#0161e9d33508a68b938a5a37f027db18938cd57a"
-  integrity sha512-g8CTgGx5dT5pgnPDw1W33Oa9PZYg10nYd+KuHTjpbJdkqxfWXcoUl/A4vOsPJDz1UM06YnOu7XRSgSXSIAGhjA==
-
 react-native-modal@^13.0.0:
   version "13.0.1"
   resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-13.0.1.tgz#691f1e646abb96fa82c1788bf18a16d585da37cd"
@@ -7617,6 +7612,11 @@ vary@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
+
+vision-camera-code-scanner@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/vision-camera-code-scanner/-/vision-camera-code-scanner-0.2.0.tgz#8adc0694319a17f6a95f6dfacc02ab7ac29b4742"
+  integrity sha512-H5hVkXfbIcGdg9YlhuS8Y/xDX5e32Vo6eK5FyDQsE9AGVjlqEHMmSLHZg7BX8UUm4ADmiAZc8wzc4n8TUqGr0g==
 
 vlq@^1.0.0:
   version "1.0.1"

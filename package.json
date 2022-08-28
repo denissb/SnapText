@@ -7,8 +7,8 @@
     "ios": "react-native run-ios --simulator=\"iPhone 11\"",
     "start": "react-native rnx-start",
     "bundle": "yarn bundle:ios && yarn bundle:android",
-    "bundle:ios": "react-native rnx-bundle --platform ios --entry-file index.ts",
-    "bundle:android": "react-native rnx-bundle --platform android --entry-file index.ts",
+    "bundle:ios": "react-native rnx-bundle --platform ios --entry-file index.tsx",
+    "bundle:android": "react-native rnx-bundle --platform android --entry-file index.tsx",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint .",
@@ -26,13 +26,13 @@
     "react-i18next": "^11.11.4",
     "react-native": "^0.66.0",
     "react-native-image-crop-picker": "^0.36.2",
-    "react-native-mlkit-ocr": "^0.2.5",
     "react-native-modal": "^13.0.0",
     "react-native-reanimated": "^2.10.0",
     "react-native-splash-screen": "^3.2.0",
     "react-native-vector-icons": "^8.1.0",
     "react-native-vision-camera": "2.13.0",
-    "react-native-webview": "^11.13.0"
+    "react-native-webview": "^11.13.0",
+    "vision-camera-code-scanner": "^0.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.14.0",

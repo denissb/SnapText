@@ -5,5 +5,12 @@ module.exports = {
       {disableImportExportTransform: true},
     ],
   ],
-  plugins: ['react-native-reanimated/plugin'],
+  plugins: [
+    [
+      'react-native-reanimated/plugin',
+      {
+        globals: ['__scanCodes'],
+      },
+    ],
+  ],
 };
