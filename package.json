@@ -32,7 +32,7 @@
     "react-native-vector-icons": "^8.1.0",
     "react-native-vision-camera": "2.13.0",
     "react-native-webview": "^11.13.0",
-    "vision-camera-code-scanner": "^0.2.0"
+    "vision-camera-ocr-scanner": "file:.yalc/vision-camera-ocr-scanner"
   },
   "devDependencies": {
     "@babel/core": "^7.14.0",

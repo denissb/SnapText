@@ -6,8 +6,7 @@ import {
   useCameraDevices,
   useFrameProcessor,
 } from 'react-native-vision-camera';
-import {scanBarcodes, BarcodeFormat} from 'vision-camera-code-scanner';
-// import {scanOCR} from 'vision-camera-ocr';
+import {scanBarcodes, scanOCR, BarcodeFormat} from 'vision-camera-ocr-scanner';
 import PendingView from './PendingView';
 import BottomControls, {TopControls} from './Controls';
 import {recogniseText} from '../services/textDetector';
@@ -38,26 +37,24 @@ const Camera = () => {
     setIsModalVisible(true);
   }, []);
 
-  // const [frameProcessor, barcodes] = useScanBarcodes([BarcodeFormat.QR_CODE], {
-  //   checkInverted: true,
-  // });
-
   const frameProcessor = useFrameProcessor(frame => {
     'worklet';
-    // const data = scanOCR(frame);
-    // if (data.result) {
-    //   //runOnJS(setIsTextRecognised)(true);
-    // }
+
+    const data = scanOCR(frame);
+    if (data.result) {
+      runOnJS(setIsTextRecognised)(data.result.blocks.length > 0);
+    }
+
     const detectedBarcodes = scanBarcodes(frame, [BarcodeFormat.ALL_FORMATS]);
     if (!detectedBarcodes || detectedBarcodes.length === 0) {
       return;
     }
-    const barcodeValue = detectedBarcodes[0]?.displayValue;
+    const detectedBarcodeValue = detectedBarcodes[0]?.displayValue;
     if (!barcodeValue) {
       return;
     }
 
-    runOnJS(setBarcodeValue)(barcodeValue);
+    runOnJS(setBarcodeValue)(detectedBarcodeValue);
   }, []);
 
   useEffect(() => {
