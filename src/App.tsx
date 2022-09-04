@@ -17,7 +17,6 @@ const Wrapper = Platform.OS === 'ios' ? SafeAreaView : View;
 i18nSetup();
 
 const App: React.FC = () => {
-  // const cameraRef = useRef<RNCamera>(null);
   useEffect(() => {
     SplashScreen.hide();
   }, []);

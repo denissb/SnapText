@@ -1,4 +1,5 @@
 import React, {useState, useCallback, useEffect, useRef} from 'react';
+import {unlink} from 'react-native-fs';
 import {runOnJS} from 'react-native-reanimated';
 import {StyleSheet, View} from 'react-native';
 import {
@@ -62,6 +63,7 @@ const Camera = () => {
         textInImage = await recogniseText(photoFilePath);
       }
       onImage(textInImage);
+      await unlink(photo?.path);
     } catch (err) {
       if (err instanceof Error) {
         showToast(err.message);
