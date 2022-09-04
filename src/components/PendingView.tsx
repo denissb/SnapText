@@ -7,6 +7,7 @@ import {COLORS} from '../settings';
 
 type Props = {
   status?: CameraPermissionStatus;
+  errorMsg?: string;
 };
 
 const OpenSettingsButton = ({title}: {title: string}) => {
@@ -22,7 +23,7 @@ const OpenSettingsButton = ({title}: {title: string}) => {
   );
 };
 
-const PendingView: React.FC<Props> = ({status}: Props) => {
+const PendingView: React.FC<Props> = ({status, errorMsg}: Props) => {
   const {t} = useTranslation();
   let msg;
 
@@ -32,7 +33,9 @@ const PendingView: React.FC<Props> = ({status}: Props) => {
 
   return (
     <View style={styles.loading}>
-      {msg && <Text style={styles.resultText}>{msg}</Text>}
+      {(msg || errorMsg) && (
+        <Text style={styles.resultText}>{msg || errorMsg}</Text>
+      )}
       {msg && <OpenSettingsButton title={t('open_settings')} />}
       {!msg && <ActivityIndicator size="large" color={COLORS.SECONDARY} />}
     </View>

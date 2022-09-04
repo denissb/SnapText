@@ -20,7 +20,7 @@ type Props = {
   flash: boolean;
   setFlash: (value: boolean) => void;
   crop: boolean;
-  takePicture: (...args: Array<any>) => any;
+  snapText: (...args: Array<any>) => any;
   setCrop: (...args: Array<any>) => any;
   isReady: boolean;
   barCodeLink?: string;
@@ -41,7 +41,7 @@ const BottomControls: React.FC<Props> = ({
   setFlash,
   crop,
   setCrop,
-  takePicture,
+  snapText,
   barCodeLink,
   onBarCodeLinkClose,
   isReady,
@@ -89,7 +89,7 @@ const BottomControls: React.FC<Props> = ({
         <View style={styles.controlsContainer}>
           <TouchableOpacity
             onPress={() =>
-              isReady || flash ? takePicture() : showToast(t('no_capture_text'))
+              isReady || flash ? snapText() : showToast(t('no_capture_text'))
             }
             style={
               isReady ? [styles.capture, styles.readyCapture] : styles.capture

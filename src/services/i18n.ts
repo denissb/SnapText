@@ -1,4 +1,4 @@
-import i18next from 'i18next';
+import i18next, {LanguageDetectorAsyncModule} from 'i18next';
 import {initReactI18next} from 'react-i18next';
 import {Platform, NativeModules} from 'react-native';
 import en from '../translations/en';
@@ -8,7 +8,7 @@ import fr from '../translations/fr';
 import lv from '../translations/lv';
 import ru from '../translations/ru';
 export const setup = () => {
-  const languageDetector = {
+  const languageDetector: LanguageDetectorAsyncModule = {
     type: 'languageDetector',
     async: true,
     detect: (cb: (lang: string) => void) => {
@@ -19,8 +19,8 @@ export const setup = () => {
 
       cb(language ? language.split('_')[0] : 'en');
     },
-    init: () => {},
-    cacheUserLanguage: () => {},
+    init: () => undefined,
+    cacheUserLanguage: () => undefined,
   };
 
   i18next
