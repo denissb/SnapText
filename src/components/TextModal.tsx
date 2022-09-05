@@ -1,9 +1,4 @@
-/**
- * @format
- * @flow strict-local
- */
 import React from 'react';
-import type {Node} from 'react';
 import {
   View,
   TextInput,
@@ -14,16 +9,14 @@ import {
 import Modal from 'react-native-modal';
 import {useTranslation} from 'react-i18next';
 import Icon from 'react-native-vector-icons/Feather';
-
 import {COLORS} from '../settings';
 import CopyButton from './CopyButton';
 
 type Props = {
-  content: String,
-  isVisible: Boolean,
-  setIsVisible: Function,
+  content?: string;
+  isVisible: boolean;
+  setIsVisible: (...args: Array<any>) => any;
 };
-
 const hitSlop = {
   top: 20,
   bottom: 20,
@@ -31,9 +24,8 @@ const hitSlop = {
   right: 20,
 };
 
-const TextModal: () => Node = ({content, isVisible, setIsVisible}: Props) => {
+const TextModal: React.FC<Props> = ({content, isVisible, setIsVisible}) => {
   const {t} = useTranslation();
-
   return (
     <Modal
       isVisible={isVisible}
@@ -87,5 +79,4 @@ const styles = StyleSheet.create({
     marginRight: -8,
   },
 });
-
 export default TextModal;

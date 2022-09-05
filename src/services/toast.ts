@@ -1,9 +1,9 @@
 import {Platform, ToastAndroid, Alert} from 'react-native';
 
-export const showToast = text => {
+export const showToast = (text: string) => {
   if (Platform.OS === 'android') {
     ToastAndroid.showWithGravity(text, ToastAndroid.SHORT, ToastAndroid.CENTER);
   } else {
-    Alert.show(text);
+    Alert.alert(text);
   }
 };
