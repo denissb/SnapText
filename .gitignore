@@ -36,6 +36,9 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
+.yalc
+yalc.lock
+
 # BUCK
 buck-out/
 \.buckd/
@@ -58,6 +61,7 @@ GoogleService-Info.plist
 
 # Bundle artifact
 *.jsbundle
+*.jsbundle.map
 
 # CocoaPods
 /ios/Pods/

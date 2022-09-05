@@ -14,4 +14,5 @@ export default {
   privacy_policy_label: 'Privātuma politika un lietošanas noteikumi',
   source_code_label: 'Pirmkods',
   open_link: 'Atvert saiti',
+  open_settings: 'Atvert iestatījumus',
 };

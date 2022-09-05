@@ -14,4 +14,5 @@ export default {
   privacy_policy_label: 'Datenschutzerklärung und Nutzungsbedingungen',
   source_code_label: 'Quellcode',
   open_link: 'Öffne URL',
+  open_settings: 'Einstellungen öffnen',
 };

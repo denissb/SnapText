@@ -15,4 +15,5 @@ export default {
   privacy_policy_label: 'Privacy Policy & Terms',
   source_code_label: 'Source code',
   open_link: 'Open link',
+  open_settings: 'Open Settings',
 };
