@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "android": "adb reverse tcp:8081 tcp:8081 && react-native run-android",
-    "ios": "react-native run-ios --simulator=\"iPhone 11\"",
+    "ios": "react-native run-ios --simulator=\"iPhone 13\"",
     "start": "react-native rnx-start",
     "bundle": "yarn bundle:ios && yarn bundle:android",
     "bundle:ios": "react-native rnx-bundle --platform ios --entry-file index.tsx",
     "bundle:android": "react-native rnx-bundle --platform android --entry-file index.tsx",
+    "align-deps": "yarn rnx-align-deps --write",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint .",
@@ -24,7 +25,7 @@
     "i18next": "^19.1.0",
     "react": "17.0.2",
     "react-i18next": "^11.11.4",
-    "react-native": "^0.66.0",
+    "react-native": "^0.66.5",
     "react-native-fs": "^2.20.0",
     "react-native-image-crop-picker": "^0.36.2",
     "react-native-mlkit-ocr": "^0.2.5",
@@ -40,6 +41,7 @@
     "@babel/core": "^7.14.0",
     "@babel/runtime": "^7.14.0",
     "@react-native-community/eslint-config": "^2.0.0",
+    "@rnx-kit/align-deps": "^2.0.3",
     "@rnx-kit/babel-preset-metro-react-native": "^1.1.0",
     "@rnx-kit/cli": "^0.14.2",
     "@rnx-kit/dep-check": "^1.12.20",
@@ -91,6 +93,24 @@
       "react",
       "react-test-renderer",
       "webview"
-    ]
+    ],
+    "alignDeps": {
+      "requirements": [
+        "react-native@0.66"
+      ],
+      "capabilities": [
+        "animation",
+        "babel-preset-react-native",
+        "core",
+        "core-android",
+        "core-ios",
+        "filesystem",
+        "jest",
+        "modal",
+        "react",
+        "react-test-renderer",
+        "webview"
+      ]
+    }
   }
 }
