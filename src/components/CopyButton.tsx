@@ -1,6 +1,6 @@
 import React from 'react';
 import {TouchableOpacity, Text, StyleSheet} from 'react-native';
-import Clipboard from '@react-native-community/clipboard';
+import Clipboard from '@react-native-clipboard/clipboard';
 import {useTranslation} from 'react-i18next';
 import Icon from 'react-native-vector-icons/Feather';
 import {COLORS} from '../settings';
