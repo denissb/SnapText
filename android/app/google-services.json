@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "31547214739",
+    "firebase_url": "https://snaptext-ae4aa.firebaseio.com",
+    "project_id": "snaptext-ae4aa",
+    "storage_bucket": "snaptext-ae4aa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31547214739:android:8129e06dda96debf803666",
+        "android_client_info": {
+          "package_name": "org.denissb.snaptext"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "31547214739-n73ioan46gvnb7ssnhr2e4a5sqnatj2l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4dJpkpaQYza_DyvdRJ1WQ_40lQvN4GaE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "31547214739-n73ioan46gvnb7ssnhr2e4a5sqnatj2l.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "31547214739-va1b6adjnaneovrbeb66tbjnn5crkuvd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.denissb.example.SnapText"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
