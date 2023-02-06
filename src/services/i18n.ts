@@ -7,6 +7,7 @@ import dk from '../translations/dk';
 import fr from '../translations/fr';
 import lv from '../translations/lv';
 import ru from '../translations/ru';
+
 export const setup = () => {
   const languageDetector: LanguageDetectorAsyncModule = {
     type: 'languageDetector',
