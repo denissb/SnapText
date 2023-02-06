@@ -14,7 +14,7 @@
     "lint": "eslint .",
     "release": "cd android && ./gradlew bundleRelease",
     "postinstall": "npx jetify && patch-package",
-    "check-dependencies": "yarn rnx-align-deps --requirements react-native@0.66.5",
+    "check-dependencies": "yarn rnx-align-deps --requirements react-native@0.71.2",
     "align-deps": "yarn rnx-align-deps --write"
   },
   "dependencies": {
