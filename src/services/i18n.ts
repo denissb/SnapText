@@ -28,6 +28,7 @@ export const setup = () => {
     .use(languageDetector)
     .use(initReactI18next)
     .init({
+      compatibilityJSON: 'v3',
       fallbackLng: 'en',
       debug: __DEV__,
       resources: {
