@@ -1,13 +1,14 @@
-import React, {useState, useCallback, useEffect, useRef} from 'react';
+import React, {useState, useCallback, useEffect, useRef, useMemo} from 'react';
 import {unlink} from 'react-native-fs';
-import {runOnJS} from 'react-native-reanimated';
 import {StyleSheet, View} from 'react-native';
 import {
   Camera as RNVCamera,
   useCameraDevices,
   useFrameProcessor,
+  useCodeScanner,
+  CodeScanner,
 } from 'react-native-vision-camera';
-import {scanBarcodes, scanOCR, BarcodeFormat} from 'vision-camera-ocr-scanner';
+// import {scanBarcodes, scanOCR, BarcodeFormat} from 'vision-camera-ocr-scanner';
 import PendingView from './PendingView';
 import BottomControls, {TopControls} from './Controls';
 import TextModal from './TextModal';
@@ -31,7 +32,7 @@ const Camera = () => {
   const cameraRef = useRef<RNVCamera>(null);
   const {t} = useTranslation();
   const devices = useCameraDevices();
-  const device = devices.back;
+  const device = devices.find(d => d.position === 'back') || devices[0];
 
   const onImage = useCallback((textInImage: string) => {
     setCapturedText(textInImage || undefined);
@@ -44,9 +45,6 @@ const Camera = () => {
     try {
       const photo = await cameraRef.current?.takePhoto({
         flash: flash ? 'on' : 'off',
-        enableAutoStabilization: true,
-        qualityPrioritization: 'balanced',
-        skipMetadata: true,
       });
 
       if (!photo?.path) {
@@ -81,28 +79,75 @@ const Camera = () => {
     } catch (e) {}
   }, [onImage, t]);
 
+  const codeScanner = useMemo(() => {
+    const scanner: CodeScanner = {
+      codeTypes: [
+        'code-128', 
+        'code-39', 
+        'code-93',
+        'codabar', 
+        'ean-13', 
+        'ean-8' ,
+        'itf', 
+        'upc-e', 
+        'upc-a', 
+        'qr', 
+        'pdf-417', 
+        'aztec', 
+        'data-matrix'
+      ],
+      onCodeScanned: (codes) => {
+        console.log(`Scanned ${codes.length} codes!`)
+      }
+    }
+
+    return scanner;
+  }, []);
+
   const frameProcessor = useFrameProcessor(frame => {
     'worklet';
 
-    const data = scanOCR(frame);
-    if (data.result) {
-      runOnJS(setIsTextRecognised)(data.result?.blocks.length > 0);
-    }
+    // const data = scanOCR(frame);
+    // if (data.result) {
+    //   runOnJS(setIsTextRecognised)(data.result?.blocks.length > 0);
+    // }
 
-    const detectedBarcodes = scanBarcodes(frame, [BarcodeFormat.ALL_FORMATS], {
-      checkInverted: true,
-    });
+    // const detectedBarcodes = scanBarcodes(frame, [BarcodeFormat.ALL_FORMATS], {
+    //   checkInverted: true,
+    // });
 
-    if (!detectedBarcodes || detectedBarcodes.length === 0) {
-      return;
-    }
-    const detectedBarcodeValue = detectedBarcodes[0]?.displayValue;
-    if (!detectedBarcodeValue) {
-      return;
-    }
+    // if (!detectedBarcodes || detectedBarcodes.length === 0) {
+    //   return;
+    // }
+    // const detectedBarcodeValue = detectedBarcodes[0]?.displayValue;
+    // if (!detectedBarcodeValue) {
+    //   return;
+    // }
 
-    runOnJS(setBarcodeValue)(detectedBarcodeValue);
+    // runOnJS(setBarcodeValue)(detectedBarcodeValue);
   }, []);
+
+  // const codeScanner = useCodeScanner({
+  //   codeTypes: [
+  //     'code-128', 
+  //     'code-39', 
+  //     'code-93',
+  //     'codabar', 
+  //     'ean-13', 
+  //     'ean-8' ,
+  //     'itf', 
+  //     'upc-e', 
+  //     'upc-a', 
+  //     'qr', 
+  //     'pdf-417', 
+  //     'aztec', 
+  //     'data-matrix'
+  //   ],
+  //   onCodeScanned: (codes) => {
+  //     console.log(`Scanned ${codes.length} codes!`);
+  //     console.log(codes);
+  //   }
+  // })
 
   useEffect(() => {
     if (!barcodeValue) {
@@ -118,7 +163,7 @@ const Camera = () => {
     }
   }, [barcodeValue]);
 
-  if (cameraPermission !== 'authorized' || !device) {
+  if (cameraPermission !== 'granted' || !device) {
     return <PendingView status={cameraPermission} errorMsg={errorMsg} />;
   }
 
@@ -130,8 +175,9 @@ const Camera = () => {
         isActive={true}
         style={StyleSheet.absoluteFill}
         frameProcessor={frameProcessor}
-        frameProcessorFps={5}
         photo={true}
+        codeScanner={codeScanner}
+        lowLightBoost={true}
       />
       {isLoading && <CameraLoader />}
       <TextModal
