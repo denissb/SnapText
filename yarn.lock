@@ -3774,9 +3774,9 @@ __metadata:
     react: 18.2.0
     react-i18next: ^14.1.2
     react-native: ^0.74.5
+    react-native-edge-to-edge: ^1.1.3
     react-native-fs: ^2.20.0
     react-native-image-crop-picker: ^0.41.2
-    react-native-mlkit-ocr: ^0.3.0
     react-native-modal: ^13.0.0
     react-native-reanimated: ^3.15.0
     react-native-splash-screen: ^3.3.0
@@ -9545,6 +9545,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-edge-to-edge@npm:^1.1.3":
+  version: 1.1.3
+  resolution: "react-native-edge-to-edge@npm:1.1.3"
+  peerDependencies:
+    react: ">=18.2.0"
+    react-native: ">=0.73.0"
+  checksum: 712c4cab722640dee0153fe7ba5663cb34a3a30310a9e3792678ac2b58b9cf6acd1677a2cdd73b63aeca3bfa99e5fb6f18cded7752f52ed3aa0eea120e39916d
+  languageName: node
+  linkType: hard
+
 "react-native-fs@npm:^2.20.0":
   version: 2.20.0
   resolution: "react-native-fs@npm:2.20.0"
@@ -9567,16 +9577,6 @@ __metadata:
   peerDependencies:
     react-native: ">=0.40.0"
   checksum: c1333b3b761e948bd0bc856773f68dcc859c7ce39dda3e14d2c32c17d55927735bfc5cbbb7ac5e8bac21feda87c93399f2a596aca7d5b0611cc1e8203d97ad2e
-  languageName: node
-  linkType: hard
-
-"react-native-mlkit-ocr@npm:^0.3.0":
-  version: 0.3.0
-  resolution: "react-native-mlkit-ocr@npm:0.3.0"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 4bd6a811312f67f3c64cabdcde8d4c6740c5ba9483c8ac3d343e1bd0f1a8631238fd7e5a9d84b082a0e5d16803ecdf7362ab15ea80e99eb8ebda01448e137d27
   languageName: node
   linkType: hard
 

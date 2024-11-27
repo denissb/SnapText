@@ -6,7 +6,6 @@ import {
   Text,
   Switch,
   Platform,
-  StatusBar,
   Linking,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
@@ -211,7 +210,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignSelf: 'stretch',
-    marginTop: StatusBar.currentHeight ? StatusBar.currentHeight + 25 : 25,
+    marginTop: 24,
     marginHorizontal: 22,
   },
 });
