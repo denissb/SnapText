@@ -13,7 +13,7 @@
     "test:watch": "jest --watch",
     "lint": "eslint .",
     "release": "cd android && ./gradlew bundleRelease",
-    "check-dependencies": "yarn rnx-align-deps --requirements react-native@0.74.5",
+    "check-dependencies": "yarn rnx-align-deps --requirements react-native@0.74.6",
     "align-deps": "yarn rnx-align-deps --write",
     "prettier:fix": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\""
   },
