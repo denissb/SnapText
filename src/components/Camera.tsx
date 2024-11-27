@@ -1,14 +1,16 @@
-import React, {useState, useCallback, useEffect, useRef, useMemo} from 'react';
+import React, {useState, useCallback, useEffect, useRef} from 'react';
 import {unlink} from 'react-native-fs';
 import {StyleSheet, View} from 'react-native';
 import {
   Camera as RNVCamera,
   useCameraDevices,
   useFrameProcessor,
-  useCodeScanner,
-  CodeScanner,
 } from 'react-native-vision-camera';
-// import {scanBarcodes, scanOCR, BarcodeFormat} from 'vision-camera-ocr-scanner';
+import {Barcode, scanCodes} from '@mgcrea/vision-camera-barcode-scanner';
+import {useTextRecognition} from 'react-native-vision-camera-text-recognition';
+import type {Text} from 'react-native-vision-camera-text-recognition/src/types';
+import {Worklets} from 'react-native-worklets-core';
+
 import PendingView from './PendingView';
 import BottomControls, {TopControls} from './Controls';
 import TextModal from './TextModal';
@@ -37,6 +39,11 @@ const Camera = () => {
   const onImage = useCallback((textInImage: string) => {
     setCapturedText(textInImage || undefined);
     setIsModalVisible(true);
+  }, []);
+
+  const onLinkClose = useCallback(() => {
+    setBarCodeLink(undefined);
+    setTimeout(() => setBarcodeValue(undefined), 2000);
   }, []);
 
   const snapText = useCallback(async () => {
@@ -79,75 +86,48 @@ const Camera = () => {
     } catch (e) {}
   }, [onImage, t]);
 
-  const codeScanner = useMemo(() => {
-    const scanner: CodeScanner = {
-      codeTypes: [
-        'code-128', 
-        'code-39', 
-        'code-93',
-        'codabar', 
-        'ean-13', 
-        'ean-8' ,
-        'itf', 
-        'upc-e', 
-        'upc-a', 
-        'qr', 
-        'pdf-417', 
-        'aztec', 
-        'data-matrix'
-      ],
-      onCodeScanned: (codes) => {
-        console.log(`Scanned ${codes.length} codes!`)
-      }
+  const processCodes = Worklets.createRunOnJS((codes: Barcode[]) => {
+    if (codes[0]?.value) {
+      setIsTextRecognised(true);
+      setBarcodeValue(codes[0].value);
     }
+  });
 
-    return scanner;
-  }, []);
+  const processText = Worklets.createRunOnJS((data: Text) => {
+    setIsTextRecognised(data?.blocks?.length > 0);
+  });
+
+  const options = {language: 'latin' as const};
+  const {scanText} = useTextRecognition(options);
 
   const frameProcessor = useFrameProcessor(frame => {
     'worklet';
 
-    // const data = scanOCR(frame);
-    // if (data.result) {
-    //   runOnJS(setIsTextRecognised)(data.result?.blocks.length > 0);
-    // }
+    const data = scanText(frame);
+    processText(data as unknown as Text);
 
-    // const detectedBarcodes = scanBarcodes(frame, [BarcodeFormat.ALL_FORMATS], {
-    //   checkInverted: true,
-    // });
+    const detectedBarcodes = scanCodes(frame, {
+      barcodeTypes: [
+        'code-128',
+        'code-39',
+        'code-93',
+        'codabar',
+        'ean-13',
+        'ean-8',
+        'itf',
+        'upc-e',
+        'upc-a',
+        'qr',
+        'pdf-417',
+        'aztec',
+        'data-matrix',
+      ],
+    });
 
-    // if (!detectedBarcodes || detectedBarcodes.length === 0) {
-    //   return;
-    // }
-    // const detectedBarcodeValue = detectedBarcodes[0]?.displayValue;
-    // if (!detectedBarcodeValue) {
-    //   return;
-    // }
-
-    // runOnJS(setBarcodeValue)(detectedBarcodeValue);
+    if (detectedBarcodes && detectedBarcodes.length > 0) {
+      processCodes(detectedBarcodes);
+    }
   }, []);
-
-  // const codeScanner = useCodeScanner({
-  //   codeTypes: [
-  //     'code-128', 
-  //     'code-39', 
-  //     'code-93',
-  //     'codabar', 
-  //     'ean-13', 
-  //     'ean-8' ,
-  //     'itf', 
-  //     'upc-e', 
-  //     'upc-a', 
-  //     'qr', 
-  //     'pdf-417', 
-  //     'aztec', 
-  //     'data-matrix'
-  //   ],
-  //   onCodeScanned: (codes) => {
-  //     console.log(`Scanned ${codes.length} codes!`);
-  //     console.log(codes);
-  //   }
-  // })
 
   useEffect(() => {
     if (!barcodeValue) {
@@ -176,7 +156,6 @@ const Camera = () => {
         style={StyleSheet.absoluteFill}
         frameProcessor={frameProcessor}
         photo={true}
-        codeScanner={codeScanner}
         lowLightBoost={true}
       />
       {isLoading && <CameraLoader />}
@@ -191,7 +170,7 @@ const Camera = () => {
           snapText={snapText}
           crop={crop}
           barCodeLink={barCodeLink}
-          onBarCodeLinkClose={() => setBarCodeLink(undefined)}
+          onBarCodeLinkClose={onLinkClose}
           setCrop={setCrop}
           setFlash={setFlash}
           flash={flash}
