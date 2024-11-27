@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   contentWrapper: {
-    maxHeight: '85%',
+    maxHeight: '86%',
   },
   text: {
     fontSize: 16,

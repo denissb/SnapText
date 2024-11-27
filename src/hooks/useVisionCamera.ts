@@ -10,7 +10,7 @@ const useVisionCamera = () => {
   const getCameraPermissions = async () => {
     try {
       let permission = await Camera.getCameraPermissionStatus();
-      if (permission !== 'authorized') {
+      if (permission !== 'granted') {
         permission = await Camera.requestCameraPermission();
       }
       setCameraPermission(permission);
