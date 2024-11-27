@@ -7,7 +7,6 @@ import {
 } from 'react-native';
 import { SystemBars } from "react-native-edge-to-edge";
 
-import SplashScreen from 'react-native-splash-screen';
 import {setup as i18nSetup} from './services/i18n';
 import Camera from './components/Camera';
 import {COLORS} from './settings';
@@ -17,10 +16,6 @@ const Wrapper = Platform.OS === 'ios' ? SafeAreaView : View;
 i18nSetup();
 
 const App: React.FC = () => {
-  useEffect(() => {
-    SplashScreen.hide();
-  }, []);
-
   return (
     <>
       <SystemBars
