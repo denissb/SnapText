@@ -1,19 +1,12 @@
 module.exports = {
-  presets: [
-    [
-      '@rnx-kit/babel-preset-metro-react-native',
-      {
-        disableImportExportTransform: true,
-        looseClassTransform: true,
-      },
-    ],
-  ],
+  presets: ['module:@react-native/babel-preset'],
   plugins: [
     [
       'react-native-reanimated/plugin',
       {
-        globals: ['__scanCodes', '__scanOCR'],
+        processNestedWorklets: true,
       },
     ],
+    ['react-native-worklets-core/plugin'],
   ],
 };

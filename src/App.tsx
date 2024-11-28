@@ -1,11 +1,11 @@
 import React, {useEffect} from 'react';
 import {
   StyleSheet,
-  StatusBar,
   View,
   SafeAreaView,
   Platform,
 } from 'react-native';
+import { SystemBars } from "react-native-edge-to-edge";
 
 import SplashScreen from 'react-native-splash-screen';
 import {setup as i18nSetup} from './services/i18n';
@@ -23,10 +23,8 @@ const App: React.FC = () => {
 
   return (
     <>
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor={COLORS.PRIMARY}
-        translucent
+      <SystemBars
+        style='auto'
       />
       <Wrapper style={styles.container}>
         <Camera />

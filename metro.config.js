@@ -1,16 +1,11 @@
-const {makeMetroConfig} = require('@rnx-kit/metro-config');
-const MetroSymlinksResolver = require('@rnx-kit/metro-resolver-symlinks');
+const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
 
-module.exports = makeMetroConfig({
-  resolver: {
-    resolveRequest: MetroSymlinksResolver(),
-  },
-  transformer: {
-    getTransformOptions: async () => ({
-      transform: {
-        experimentalImportSupport: true,
-        inlineRequires: true,
-      },
-    }),
-  },
-});
+/**
+ * Metro configuration
+ * https://reactnative.dev/docs/metro
+ *
+ * @type {import('metro-config').MetroConfig}
+ */
+const config = {};
+
+module.exports = mergeConfig(getDefaultConfig(__dirname), config);
