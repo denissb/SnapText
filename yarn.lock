@@ -3680,6 +3680,7 @@ __metadata:
     react-native-image-crop-picker: ^0.41.2
     react-native-modal: ^13.0.0
     react-native-reanimated: ^3.15.0
+    react-native-safe-area-context: ^4.14.0
     react-native-splash-screen: ^3.3.0
     react-native-vector-icons: ^10.1.0
     react-native-vision-camera: 4.5.2
@@ -9514,6 +9515,16 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: fad4f54d7f005f4fb3d90d983bedcf1ec7de936259b8e286feb35edaa9d1ac16d8b927fcd59eeea7f91446310432b342fd9785301a304955844785fef52a3e31
+  languageName: node
+  linkType: hard
+
+"react-native-safe-area-context@npm:^4.14.0":
+  version: 4.14.0
+  resolution: "react-native-safe-area-context@npm:4.14.0"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 394523434f3c447ff7ace6fddb00fb976b14a1e7bed378eb8ea684a73153962ebcdb51445d9c2052d0d4211f5a69354aafc05875989b7e79bf1c5b592e490438
   languageName: node
   linkType: hard
 

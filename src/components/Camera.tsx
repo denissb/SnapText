@@ -86,15 +86,15 @@ const Camera = () => {
     } catch (e) {}
   }, [onImage, t]);
 
-  const processCodes = Worklets.createRunOnJS((codes: Barcode[]) => {
-    if (codes[0]?.value) {
+  const processCodes = Worklets.createRunOnJS((code: Barcode) => {
+    if (code?.value) {
       setIsTextRecognised(true);
-      setBarcodeValue(codes[0].value);
+      setBarcodeValue(code.value);
     }
   });
 
-  const processText = Worklets.createRunOnJS((data: Text) => {
-    setIsTextRecognised(data?.blocks?.length > 0);
+  const processText = Worklets.createRunOnJS((hasText: boolean) => {
+    setIsTextRecognised(hasText);
   });
 
   const options = {language: 'latin' as const};
@@ -104,7 +104,8 @@ const Camera = () => {
     'worklet';
 
     const data = scanText(frame);
-    processText(data as unknown as Text);
+
+    processText(!!(data as unknown as Text)?.blocks);
 
     const detectedBarcodes = scanCodes(frame, {
       barcodeTypes: [
@@ -125,7 +126,7 @@ const Camera = () => {
     });
 
     if (detectedBarcodes && detectedBarcodes.length > 0) {
-      processCodes(detectedBarcodes);
+      processCodes(detectedBarcodes[0]);
     }
   }, []);
 
