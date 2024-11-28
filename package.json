@@ -1,6 +1,6 @@
 {
   "name": "SnapText",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "private": true,
   "scripts": {
     "android": "adb reverse tcp:8081 tcp:8081 && react-native run-android",
