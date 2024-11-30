@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useState, useEffect } from 'react';
+import React, {MutableRefObject, useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -98,10 +98,14 @@ const BottomControls: React.FC<Props> = ({
         <View style={styles.controlsContainer}>
           <TouchableOpacity
             onPress={() =>
-              isCaptureReady || flash ? snapText() : showToast(t('no_capture_text'))
+              isCaptureReady || flash
+                ? snapText()
+                : showToast(t('no_capture_text'))
             }
             style={
-              isCaptureReady ? [styles.capture, styles.readyCapture] : styles.capture
+              isCaptureReady
+                ? [styles.capture, styles.readyCapture]
+                : styles.capture
             }>
             <Icon name="camera" size={32} color={COLORS.PRIMARY} />
           </TouchableOpacity>

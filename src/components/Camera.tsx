@@ -20,7 +20,7 @@ import {openCropper, openImage} from '../services/images';
 import {useTranslation} from 'react-i18next';
 import useVisionCamera from '../hooks/useVisionCamera';
 import {showToast} from '../services/toast';
-import { useModal } from '../context/ModalContext';
+import {useModal} from '../context/ModalContext';
 
 const Camera = () => {
   const [crop, setCrop] = useState(true);
@@ -36,7 +36,7 @@ const Camera = () => {
   const {t} = useTranslation();
   const devices = useCameraDevices();
   const device = devices.find(d => d.position === 'back') || devices[0];
-  const { open: isModalOpen } = useModal();
+  const {open: isModalOpen} = useModal();
 
   const onImage = useCallback((textInImage: string) => {
     setCapturedText(textInImage || undefined);

@@ -33,14 +33,15 @@ const SafeAreaApp: React.FC = () => {
   );
 
   return (
-    <ModalContext.Provider value={{open: isModalOpen, setIsModalOpen: setIsModalOpen}}>
+    <ModalContext.Provider
+      value={{open: isModalOpen, setIsModalOpen: setIsModalOpen}}>
       <SafeAreaProvider>
         <SystemBars style="auto" hidden={false} />
         <View style={memoStyle}>
           <Camera />
         </View>
       </SafeAreaProvider>
-    </ ModalContext.Provider>
+    </ModalContext.Provider>
   );
 };
 
