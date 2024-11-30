@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, TouchableOpacity, Text, Linking} from 'react-native';
+import {StyleSheet, View, TouchableOpacity, Text, Linking, Modal} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import {COLORS, LINKS} from '../settings';
 import {useTranslation} from 'react-i18next';
 import WebViewModal from './WebViewModal';
 import policyContent from '../assets/html/policy';
+import { useModal } from '../context/ModalContext';
 
 const openLink = async (link: string) => {
   try {
@@ -17,7 +18,7 @@ const openLink = async (link: string) => {
 const Menu: React.FC = () => {
   const {t} = useTranslation();
   const [opened, setIsOpened] = useState(false);
-  const [policyModalVisible, setPolicyModalVisible] = useState(false);
+  const { setIsModalOpen } = useModal();
   const hamburgerSyles = opened
     ? [styles.hamburger, styles.hamburgerOpened]
     : styles.hamburger;
@@ -36,7 +37,7 @@ const Menu: React.FC = () => {
         <View style={styles.menu}>
           <TouchableOpacity
             style={styles.menuItem}
-            onPress={() => setPolicyModalVisible(true)}>
+            onPress={() => setIsModalOpen(true)}>
             <Text style={styles.text}>{t('privacy_policy_label')}</Text>
           </TouchableOpacity>
           <View style={styles.line} />
@@ -46,8 +47,6 @@ const Menu: React.FC = () => {
             <Text style={styles.text}>{t('source_code_label')}</Text>
           </TouchableOpacity>
           <WebViewModal
-            visible={policyModalVisible}
-            setIsVisible={setPolicyModalVisible}
             source={{
               html: policyContent,
             }}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MutableRefObject, useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -21,7 +21,7 @@ type Props = {
   crop: boolean;
   snapText: (...args: Array<any>) => any;
   setCrop: (...args: Array<any>) => any;
-  isReady: boolean;
+  isReady: MutableRefObject<boolean>;
   barCodeLink?: string;
   onBarCodeLinkClose: (...args: Array<any>) => any;
 };
@@ -46,6 +46,16 @@ const BottomControls: React.FC<Props> = ({
   isReady,
 }: Props) => {
   const {t} = useTranslation();
+  const [isCaptureReady, setIsCaptureReady] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsCaptureReady(isReady.current);
+    }, 12);
+
+    return () => interval && clearInterval(interval);
+  }, [isReady]);
+
   return (
     <View style={styles.container}>
       {barCodeLink && (
@@ -88,10 +98,10 @@ const BottomControls: React.FC<Props> = ({
         <View style={styles.controlsContainer}>
           <TouchableOpacity
             onPress={() =>
-              isReady || flash ? snapText() : showToast(t('no_capture_text'))
+              isCaptureReady || flash ? snapText() : showToast(t('no_capture_text'))
             }
             style={
-              isReady ? [styles.capture, styles.readyCapture] : styles.capture
+              isCaptureReady ? [styles.capture, styles.readyCapture] : styles.capture
             }>
             <Icon name="camera" size={32} color={COLORS.PRIMARY} />
           </TouchableOpacity>

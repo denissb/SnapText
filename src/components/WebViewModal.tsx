@@ -3,28 +3,26 @@ import {Modal, TouchableOpacity, StyleSheet} from 'react-native';
 import {WebView} from 'react-native-webview';
 import Icon from 'react-native-vector-icons/Feather';
 import {COLORS} from '../settings';
+import { useModal } from '../context/ModalContext';
 
 type Props = {
   source: {html: string} | {uri: string};
-  setIsVisible: (isVisible: boolean) => void;
-  visible: boolean;
 };
 
 const WebViewModal: React.FC<Props> = ({
   source,
-  visible,
-  setIsVisible,
 }: Props) => {
+  const { open, setIsModalOpen } = useModal();
   return (
     <Modal
       animationType="slide"
       transparent={false}
-      visible={visible}
-      onRequestClose={() => setIsVisible(false)}>
+      visible={open}
+      onRequestClose={() => setIsModalOpen(false)}>
       <TouchableOpacity
         style={styles.close}
         onPress={() => {
-          setIsVisible(false);
+          setIsModalOpen(false);
         }}>
         <Icon name="x" size={30} color={COLORS.SECONDARY} />
       </TouchableOpacity>

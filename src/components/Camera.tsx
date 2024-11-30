@@ -20,6 +20,7 @@ import {openCropper, openImage} from '../services/images';
 import {useTranslation} from 'react-i18next';
 import useVisionCamera from '../hooks/useVisionCamera';
 import {showToast} from '../services/toast';
+import { useModal } from '../context/ModalContext';
 
 const Camera = () => {
   const [crop, setCrop] = useState(true);
@@ -27,7 +28,7 @@ const Camera = () => {
   const [barcodeValue, setBarcodeValue] = useState<string>();
   const [capturedText, setCapturedText] = useState<string>();
   const [barCodeLink, setBarCodeLink] = useState<string | undefined>(undefined);
-  const [isTextRecognised, setIsTextRecognised] = useState(false);
+  const isTextRecognised = useRef(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const {cameraPermission, errorMsg} = useVisionCamera();
@@ -35,6 +36,7 @@ const Camera = () => {
   const {t} = useTranslation();
   const devices = useCameraDevices();
   const device = devices.find(d => d.position === 'back') || devices[0];
+  const { open: isModalOpen } = useModal();
 
   const onImage = useCallback((textInImage: string) => {
     setCapturedText(textInImage || undefined);
@@ -88,13 +90,13 @@ const Camera = () => {
 
   const processCodes = Worklets.createRunOnJS((code: Barcode) => {
     if (code?.value) {
-      setIsTextRecognised(true);
+      isTextRecognised.current = true;
       setBarcodeValue(code.value);
     }
   });
 
   const processText = Worklets.createRunOnJS((hasText: boolean) => {
-    setIsTextRecognised(hasText);
+    isTextRecognised.current = hasText;
   });
 
   const options = {language: 'latin' as const};
@@ -153,8 +155,8 @@ const Camera = () => {
       <RNVCamera
         ref={cameraRef}
         device={device}
-        isActive={true}
-        style={StyleSheet.absoluteFill}
+        isActive={!isModalOpen}
+        style={isModalOpen ? null : StyleSheet.absoluteFill}
         frameProcessor={frameProcessor}
         photo={true}
         lowLightBoost={true}

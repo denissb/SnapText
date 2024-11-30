@@ -10,12 +10,11 @@ const CameraLoader = () => (
 
 const styles = StyleSheet.create({
   loadingOverlay: {
-    position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: 999,
     backgroundColor: 'rgba(50, 50, 50, 0.65)',
-    width: '100%',
-    height: '100%',
+    ...StyleSheet.absoluteFillObject,
   },
 });
 

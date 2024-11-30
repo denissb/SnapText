@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {SystemBars} from 'react-native-edge-to-edge';
 import {
@@ -9,6 +9,7 @@ import SplashScreen from 'react-native-splash-screen';
 
 import {setup as i18nSetup} from './services/i18n';
 import Camera from './components/Camera';
+import ModalContext from './context/ModalContext';
 import {COLORS} from './settings';
 
 i18nSetup();
@@ -17,6 +18,8 @@ const SafeAreaApp: React.FC = () => {
   useEffect(() => {
     SplashScreen.hide();
   }, []);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const insets = useSafeAreaInsets();
 
@@ -30,12 +33,14 @@ const SafeAreaApp: React.FC = () => {
   );
 
   return (
-    <SafeAreaProvider>
-      <SystemBars style="auto" hidden={false} />
-      <View style={memoStyle}>
-        <Camera />
-      </View>
-    </SafeAreaProvider>
+    <ModalContext.Provider value={{open: isModalOpen, setIsModalOpen: setIsModalOpen}}>
+      <SafeAreaProvider>
+        <SystemBars style="auto" hidden={false} />
+        <View style={memoStyle}>
+          <Camera />
+        </View>
+      </SafeAreaProvider>
+    </ ModalContext.Provider>
   );
 };
 
