@@ -51,9 +51,11 @@ const BottomControls: React.FC<Props> = ({
   useEffect(() => {
     const interval = setInterval(() => {
       setIsCaptureReady(isReady.current);
-    }, 12);
+    }, 128);
 
-    return () => interval && clearInterval(interval);
+    return () => {
+      interval && clearInterval(interval);
+    };
   }, [isReady]);
 
   return (
@@ -70,7 +72,11 @@ const BottomControls: React.FC<Props> = ({
             style={styles.linkBody}
             onPress={() => openLink(barCodeLink)}>
             <Text style={styles.linkLabel}>{t('open_link')}</Text>
-            <Text numberOfLines={1} selectable style={styles.linkText}>
+            <Text
+              numberOfLines={3}
+              ellipsizeMode="tail"
+              selectable
+              style={styles.linkText}>
               {barCodeLink}
             </Text>
             <CopyButton content={barCodeLink} />

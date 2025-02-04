@@ -9,7 +9,7 @@ const useVisionCamera = () => {
 
   const getCameraPermissions = async () => {
     try {
-      let permission = await Camera.getCameraPermissionStatus();
+      let permission = Camera.getCameraPermissionStatus();
       if (permission !== 'granted') {
         permission = await Camera.requestCameraPermission();
       }
@@ -24,9 +24,11 @@ const useVisionCamera = () => {
     if (!cameraPermission) {
       getCameraPermissions();
     } else if (cameraPermission === 'denied') {
-      listener = AppState.addEventListener('change', async () => {
-        let grantedPermission = await Camera.getCameraPermissionStatus();
-        setCameraPermission(grantedPermission);
+      listener = AppState.addEventListener('change', async state => {
+        if (state === 'active') {
+          let grantedPermission = Camera.getCameraPermissionStatus();
+          setCameraPermission(grantedPermission);
+        }
       });
     }
     return () => {

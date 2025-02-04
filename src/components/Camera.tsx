@@ -5,6 +5,8 @@ import {
   Camera as RNVCamera,
   useCameraDevices,
   useFrameProcessor,
+  runAsync,
+  runAtTargetFps,
 } from 'react-native-vision-camera';
 import {Barcode, scanCodes} from '@mgcrea/vision-camera-barcode-scanner';
 import {useTextRecognition} from 'react-native-vision-camera-text-recognition';
@@ -105,31 +107,34 @@ const Camera = () => {
   const frameProcessor = useFrameProcessor(frame => {
     'worklet';
 
-    const data = scanText(frame);
+    //runAsync(frame, () => {
+    runAtTargetFps(2, () => {
+      'worklet';
+      const data = scanText(frame);
+      processText(!!(data as unknown as Text)?.blocks);
 
-    processText(!!(data as unknown as Text)?.blocks);
+      const detectedBarcodes = scanCodes(frame, {
+        barcodeTypes: [
+          'code-128',
+          'code-39',
+          'code-93',
+          'codabar',
+          'ean-13',
+          'ean-8',
+          'itf',
+          'upc-e',
+          'upc-a',
+          'qr',
+          'pdf-417',
+          'aztec',
+          'data-matrix',
+        ],
+      });
 
-    const detectedBarcodes = scanCodes(frame, {
-      barcodeTypes: [
-        'code-128',
-        'code-39',
-        'code-93',
-        'codabar',
-        'ean-13',
-        'ean-8',
-        'itf',
-        'upc-e',
-        'upc-a',
-        'qr',
-        'pdf-417',
-        'aztec',
-        'data-matrix',
-      ],
+      if (detectedBarcodes && detectedBarcodes.length > 0) {
+        processCodes(detectedBarcodes[0]);
+      }
     });
-
-    if (detectedBarcodes && detectedBarcodes.length > 0) {
-      processCodes(detectedBarcodes[0]);
-    }
   }, []);
 
   useEffect(() => {
@@ -160,6 +165,7 @@ const Camera = () => {
         frameProcessor={frameProcessor}
         photo={true}
         lowLightBoost={true}
+        enableFpsGraph={__DEV__}
       />
       {isLoading && <CameraLoader />}
       <TextModal

@@ -1,11 +1,11 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useLayoutEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {SystemBars} from 'react-native-edge-to-edge';
 import {
   SafeAreaProvider,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
-import SplashScreen from 'react-native-splash-screen';
+import BootSplash from 'react-native-bootsplash';
 
 import {setup as i18nSetup} from './services/i18n';
 import Camera from './components/Camera';
@@ -15,11 +15,11 @@ import {COLORS} from './settings';
 i18nSetup();
 
 const SafeAreaApp: React.FC = () => {
-  useEffect(() => {
-    SplashScreen.hide();
-  }, []);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useLayoutEffect(() => {
+    BootSplash.hide({fade: true});
+  }, []);
 
   const insets = useSafeAreaInsets();
 
