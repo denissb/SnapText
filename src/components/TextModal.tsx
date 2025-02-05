@@ -5,8 +5,9 @@ import {
   StyleSheet,
   TouchableOpacity,
   Text,
+  Modal,
+  ScrollView,
 } from 'react-native';
-import Modal from 'react-native-modal';
 import {useTranslation} from 'react-i18next';
 import Icon from 'react-native-vector-icons/Feather';
 import {COLORS} from '../settings';
@@ -28,9 +29,14 @@ const TextModal: React.FC<Props> = ({content, isVisible, setIsVisible}) => {
   const {t} = useTranslation();
   return (
     <Modal
-      isVisible={isVisible}
-      onBackButtonPress={() => setIsVisible(false)}
-      onBackdropPress={() => setIsVisible(false)}>
+      visible={isVisible}
+      onDismiss={() => setIsVisible(false)}
+      onRequestClose={() => setIsVisible(false)}
+      animationType='fade'
+      hardwareAccelerated
+      statusBarTranslucent
+      navigationBarTranslucent
+      transparent>
       <View style={styles.container}>
         <View style={styles.contentWrapper}>
           <TouchableOpacity
@@ -41,12 +47,15 @@ const TextModal: React.FC<Props> = ({content, isVisible, setIsVisible}) => {
           </TouchableOpacity>
           {content ? (
             <>
+            <ScrollView>
               <TextInput
-                value={content}
-                multiline
-                style={styles.text}
-                showSoftInputOnFocus={false}
+                  value={content}
+                  multiline
+                  style={styles.text}
+                  showSoftInputOnFocus={false}
               />
+            </ScrollView>
+
               <CopyButton content={content} />
             </>
           ) : (
@@ -60,14 +69,20 @@ const TextModal: React.FC<Props> = ({content, isVisible, setIsVisible}) => {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: COLORS.TRANSPARENCY,
+    flex: 1,
+    alignContent: 'center',
+    justifyContent: 'center',
+  },
+  contentWrapper: {
     backgroundColor: COLORS.SECONDARY,
-    paddingHorizontal: 25,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    marginHorizontal: 16,
     paddingTop: 10,
     paddingBottom: 20,
     borderRadius: 10,
-  },
-  contentWrapper: {
-    maxHeight: '86%',
+    maxHeight: '72%',
   },
   text: {
     fontSize: 16,
