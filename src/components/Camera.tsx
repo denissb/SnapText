@@ -161,16 +161,18 @@ const Camera = () => {
 
   return (
     <>
-      {!isModalOpen && <RNVCamera
-        ref={cameraRef}
-        device={device}
-        isActive={!isModalOpen}
-        style={isModalOpen ? null : StyleSheet.absoluteFill}
-        frameProcessor={frameProcessor}
-        photo={true}
-        lowLightBoost={true}
-        enableFpsGraph={__DEV__}
-      />}
+      {!isModalOpen && (
+        <RNVCamera
+          ref={cameraRef}
+          device={device}
+          isActive={!isModalOpen}
+          style={isModalOpen ? null : StyleSheet.absoluteFill}
+          frameProcessor={frameProcessor}
+          photo={true}
+          lowLightBoost={true}
+          enableFpsGraph={__DEV__}
+        />
+      )}
       {isLoading && <CameraLoader />}
       <TextModal
         isVisible={isModalVisible}
