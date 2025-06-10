@@ -112,6 +112,10 @@ const Camera = () => {
       'worklet';
       const data = scanText(frame);
       processText(!!(data as unknown as Text)?.blocks);
+    });
+
+    runAtTargetFps(1, () => {
+      'worklet';
 
       const detectedBarcodes = scanCodes(frame, {
         barcodeTypes: [
@@ -157,7 +161,7 @@ const Camera = () => {
 
   return (
     <>
-      <RNVCamera
+      {!isModalOpen && <RNVCamera
         ref={cameraRef}
         device={device}
         isActive={!isModalOpen}
@@ -166,7 +170,7 @@ const Camera = () => {
         photo={true}
         lowLightBoost={true}
         enableFpsGraph={__DEV__}
-      />
+      />}
       {isLoading && <CameraLoader />}
       <TextModal
         isVisible={isModalVisible}

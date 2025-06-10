@@ -55,7 +55,6 @@ const TextModal: React.FC<Props> = ({content, isVisible, setIsVisible}) => {
                   showSoftInputOnFocus={false}
               />
             </ScrollView>
-
               <CopyButton content={content} />
             </>
           ) : (
