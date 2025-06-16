@@ -15,4 +15,6 @@ export default {
   source_code_label: 'Kildekode',
   open_link: 'Aben link',
   open_settings: 'Åbn Indstillinger',
+  error_scanning_document: 'Fejl ved scannering af dokument',
+  no_document_scanned: 'Ingen dokument scannet',
 };

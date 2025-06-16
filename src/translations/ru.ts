@@ -16,4 +16,6 @@ export default {
   source_code_label: 'Исходный код',
   open_link: 'Открыть ссылку',
   open_settings: 'Открыть настройки',
+  error_scanning_document: 'Ошибка сканирования документа',
+  no_document_scanned: 'Документ не сканирован',
 };

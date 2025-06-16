@@ -1,6 +1,6 @@
 import React, {useState, useCallback, useEffect, useRef} from 'react';
 import {unlink} from 'react-native-fs';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
 import {
   Camera as RNVCamera,
   useCameraDevices,
@@ -27,6 +27,9 @@ import {useModal} from '../context/ModalContext';
 const Camera = () => {
   const [crop, setCrop] = useState(true);
   const [flash, setFlash] = useState(false);
+  const [coverMode, setCoverMode] = useState<'cover' | 'contain'>(
+    'cover' as const,
+  );
   const [barcodeValue, setBarcodeValue] = useState<string>();
   const [capturedText, setCapturedText] = useState<string>();
   const [barCodeLink, setBarCodeLink] = useState<string | undefined>(undefined);
@@ -162,16 +165,22 @@ const Camera = () => {
   return (
     <>
       {!isModalOpen && (
-        <RNVCamera
-          ref={cameraRef}
-          device={device}
-          isActive={!isModalOpen}
-          style={isModalOpen ? null : StyleSheet.absoluteFill}
-          frameProcessor={frameProcessor}
-          photo={true}
-          lowLightBoost={true}
-          enableFpsGraph={__DEV__}
-        />
+        <TouchableWithoutFeedback
+          onLongPress={() =>
+            setCoverMode(coverMode === 'contain' ? 'cover' : 'contain')
+          }>
+          <RNVCamera
+            ref={cameraRef}
+            device={device}
+            isActive={true}
+            style={StyleSheet.absoluteFill}
+            frameProcessor={frameProcessor}
+            photo={true}
+            lowLightBoost={true}
+            enableFpsGraph={__DEV__}
+            resizeMode={coverMode}
+          />
+        </TouchableWithoutFeedback>
       )}
       {isLoading && <CameraLoader />}
       <TextModal

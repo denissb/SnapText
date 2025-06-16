@@ -16,4 +16,6 @@ export default {
   source_code_label: 'Source code',
   open_link: 'Open link',
   open_settings: 'Open Settings',
+  error_scanning_document: 'Error scanning document',
+  no_document_scanned: 'No document scanned',
 };
