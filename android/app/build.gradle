@@ -94,8 +94,8 @@ android {
         applicationId "org.denissb.snaptext"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 16
-        versionName "1.6.0"
+        versionCode 17
+        versionName "1.7.0"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
     }
