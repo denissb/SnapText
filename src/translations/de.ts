@@ -15,4 +15,6 @@ export default {
   source_code_label: 'Quellcode',
   open_link: 'Öffne URL',
   open_settings: 'Einstellungen öffnen',
+  error_scanning_document: 'Fehler beim Scannen des Dokuments',
+  no_document_scanned: 'Kein Dokument gescannt',
 };

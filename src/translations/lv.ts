@@ -15,4 +15,6 @@ export default {
   source_code_label: 'Pirmkods',
   open_link: 'Atvert saiti',
   open_settings: 'Atvert iestatījumus',
+  error_scanning_document: 'Kļūda dokumenta skanāšana',
+  no_document_scanned: 'Dokuments nav skanēts',
 };

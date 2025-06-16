@@ -6,5 +6,6 @@ export const recogniseText = async (imagePath: string) => {
     orientation: 'portrait',
   });
 
+  console.log(result);
   return result.resultText;
 };

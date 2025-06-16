@@ -32,7 +32,7 @@ const TextModal: React.FC<Props> = ({content, isVisible, setIsVisible}) => {
       visible={isVisible}
       onDismiss={() => setIsVisible(false)}
       onRequestClose={() => setIsVisible(false)}
-      animationType='fade'
+      animationType="fade"
       hardwareAccelerated
       statusBarTranslucent
       navigationBarTranslucent
@@ -47,15 +47,14 @@ const TextModal: React.FC<Props> = ({content, isVisible, setIsVisible}) => {
           </TouchableOpacity>
           {content ? (
             <>
-            <ScrollView>
-              <TextInput
+              <ScrollView>
+                <TextInput
                   value={content}
                   multiline
                   style={styles.text}
                   showSoftInputOnFocus={false}
-              />
-            </ScrollView>
-
+                />
+              </ScrollView>
               <CopyButton content={content} />
             </>
           ) : (

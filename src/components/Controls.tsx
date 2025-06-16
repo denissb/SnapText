@@ -1,4 +1,4 @@
-import React, {MutableRefObject, useState, useEffect} from 'react';
+import React, {RefObject, useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -9,11 +9,13 @@ import {
   Linking,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
+
 import {useTranslation} from 'react-i18next';
 import Menu from './Menu';
 import CopyButton from './CopyButton';
 import {showToast} from '../services/toast';
 import {COLORS} from '../settings';
+import useDocumentScanner from '../hooks/useDocumentScanner';
 
 type Props = {
   flash: boolean;
@@ -21,7 +23,7 @@ type Props = {
   crop: boolean;
   snapText: (...args: Array<any>) => any;
   setCrop: (...args: Array<any>) => any;
-  isReady: MutableRefObject<boolean>;
+  isReady: RefObject<boolean>;
   barCodeLink?: string;
   onBarCodeLinkClose: (...args: Array<any>) => any;
 };
@@ -142,18 +144,31 @@ type TopControlProps = {
   openImagePicker: (...args: Array<any>) => any;
 };
 
-const TopControls: React.FC<TopControlProps> = ({openImagePicker}) => (
-  <View style={styles.topControls}>
-    <Menu />
-    <TouchableOpacity
-      style={styles.topContainer}
-      onPress={() => {
-        openImagePicker();
-      }}>
-      <Icon name="file-text" size={25} color={COLORS.SECONDARY} />
-    </TouchableOpacity>
-  </View>
-);
+const TopControls: React.FC<TopControlProps> = ({openImagePicker}) => {
+  const scanDocument = useDocumentScanner();
+
+  return (
+    <View style={styles.topControls}>
+      <Menu />
+      <View style={styles.rightSection}>
+        <TouchableOpacity
+          style={styles.topContainer}
+          accessibilityActions={[{name: 'scan'}]}
+          accessibilityLabel="scan documents"
+          onPress={scanDocument}>
+          <Icon name="file-plus" size={25} color={COLORS.SECONDARY} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.topContainer}
+          accessibilityActions={[{name: 'choose file'}]}
+          accessibilityLabel="choose a file"
+          onPress={openImagePicker}>
+          <Icon name="file-text" size={25} color={COLORS.SECONDARY} />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -224,6 +239,7 @@ const styles = StyleSheet.create({
   topContainer: {
     backgroundColor: COLORS.TRANSPARENCY,
     padding: 12,
+    marginLeft: 12,
     borderRadius: 10,
   },
   topControls: {
@@ -232,6 +248,9 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     marginTop: 24,
     marginHorizontal: 22,
+  },
+  rightSection: {
+    flexDirection: 'row',
   },
 });
 export default BottomControls;

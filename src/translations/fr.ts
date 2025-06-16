@@ -15,4 +15,6 @@ export default {
   source_code_label: 'Code source',
   open_link: 'Ouvrir le lien',
   open_settings: 'Ouvrir les paramètres',
+  error_scanning_document: 'Erreur lors du scan du document',
+  no_document_scanned: 'Aucun document scanné',
 };
