@@ -4747,7 +4747,7 @@ __metadata:
     react-i18next: 15.7.4
     react-native: 0.81.4
     react-native-bootsplash: ^6.3.9
-    react-native-edge-to-edge: ^1.4.3
+    react-native-edge-to-edge: ^1.7.0
     react-native-fs: ^2.20.0
     react-native-image-crop-picker: 0.51.0
     react-native-reanimated: 3.19.1
@@ -11783,7 +11783,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-edge-to-edge@npm:^1.4.3":
+"react-native-edge-to-edge@npm:^1.7.0":
   version: 1.7.0
   resolution: "react-native-edge-to-edge@npm:1.7.0"
   peerDependencies:
