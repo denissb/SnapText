@@ -1,12 +1,14 @@
-const {getDefaultConfig} = require('expo/metro-config');
-const {mergeConfig} = require('@react-native/metro-config');
+// Learn more https://docs.expo.io/guides/customizing-metro
+const { getDefaultConfig, mergeConfig } = require('expo/metro-config');
+const {
+  getBundleModeMetroConfig,
+} = require('react-native-worklets/bundleMode');
 
-/**
- * Metro configuration
- * https://reactnative.dev/docs/metro
- *
- * @type {import('@react-native/metro-config').MetroConfig}
- */
-const config = {};
+/** @type {import('expo/metro-config').MetroConfig} */
+let config = getDefaultConfig(__dirname);
 
-module.exports = mergeConfig(getDefaultConfig(__dirname), config);
+// Your modifications to the config
+
+config = getBundleModeMetroConfig(config);
+
+module.exports = config;

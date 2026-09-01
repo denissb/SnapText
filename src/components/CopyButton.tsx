@@ -2,7 +2,7 @@ import React from 'react';
 import {TouchableOpacity, Text, StyleSheet} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {useTranslation} from 'react-i18next';
-import Icon from 'react-native-vector-icons/Feather';
+import Icon from "@react-native-vector-icons/feather/static";
 import {COLORS} from '../settings';
 import {showToast} from '../services/toast';
 

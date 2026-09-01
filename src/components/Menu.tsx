@@ -7,7 +7,7 @@ import {
   Linking,
   Modal,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
+import Icon from "@react-native-vector-icons/feather/static";
 import {COLORS, LINKS} from '../settings';
 import {useTranslation} from 'react-i18next';
 import WebViewModal from './WebViewModal';

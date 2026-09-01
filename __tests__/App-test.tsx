@@ -12,4 +12,5 @@ import {it} from '@jest/globals';
 test('renders correctly', async () => {
   await ReactTestRenderer.act(() => {
     ReactTestRenderer.create(<App />);
+  });
 });

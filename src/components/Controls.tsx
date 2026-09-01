@@ -8,7 +8,7 @@ import {
   Platform,
   Linking,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
+import Icon from "@react-native-vector-icons/feather/static";
 
 import {useTranslation} from 'react-i18next';
 import Menu from './Menu';

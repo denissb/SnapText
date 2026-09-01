@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     zIndex: 999,
     backgroundColor: 'rgba(50, 50, 50, 0.65)',
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
   },
 });
 

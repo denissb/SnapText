@@ -1,7 +1,7 @@
 import React from 'react';
 import {Modal, TouchableOpacity, StyleSheet} from 'react-native';
 import {WebView} from 'react-native-webview';
-import Icon from 'react-native-vector-icons/Feather';
+import Icon from "@react-native-vector-icons/feather/static";
 import {COLORS} from '../settings';
 import {useModal} from '../context/ModalContext';
 

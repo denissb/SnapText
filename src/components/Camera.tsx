@@ -1,18 +1,16 @@
 import React, {useState, useCallback, useEffect, useRef} from 'react';
 import {unlink} from 'react-native-fs';
 import {StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
+import { scheduleOnRN } from 'react-native-worklets';
+import { useTextRecognition, type Text } from 'react-native-vision-camera-ocr-plus'
+
 import {
   Camera as RNVCamera,
   useCameraDevices,
-  useFrameProcessor,
-  runAsync,
-  runAtTargetFps,
+  useFrameOutput,
+  usePhotoOutput,
 } from 'react-native-vision-camera';
-import {Barcode, scanCodes} from '@mgcrea/vision-camera-barcode-scanner';
-import {useTextRecognition} from 'react-native-vision-camera-text-recognition';
-import type {Text} from 'react-native-vision-camera-text-recognition/src/types';
-import {Worklets} from 'react-native-worklets-core';
-
+import {useBarcodeScanner, } from 'react-native-vision-camera-barcode-scanner';
 import PendingView from './PendingView';
 import BottomControls, {TopControls} from './Controls';
 import TextModal from './TextModal';
@@ -30,18 +28,67 @@ const Camera = () => {
   const [coverMode, setCoverMode] = useState<'cover' | 'contain'>(
     'cover' as const,
   );
+    const { scanText } = useTextRecognition({ language: 'latin', frameSkipThreshold: 5 })
+
   const [barcodeValue, setBarcodeValue] = useState<string>();
   const [capturedText, setCapturedText] = useState<string>();
   const [barCodeLink, setBarCodeLink] = useState<string | undefined>(undefined);
   const isTextRecognised = useRef(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const {cameraPermission, errorMsg} = useVisionCamera();
-  const cameraRef = useRef<RNVCamera>(null);
+  const {cameraPermission} = useVisionCamera();
   const {t} = useTranslation();
   const devices = useCameraDevices();
   const device = devices.find(d => d.position === 'back') || devices[0];
   const {open: isModalOpen} = useModal();
+
+  const photoOutput = usePhotoOutput()
+
+
+  const setTextRecognised = React.useCallback(
+    (text?: string) => {
+      if (text) {
+          isTextRecognised.current = true;
+      } else {
+         isTextRecognised.current = false;
+      }
+    },
+    []
+  );
+
+  const setBarcodeRecognised = React.useCallback(
+    (barcode?: string) => {
+      if (barcode) {
+        setBarcodeValue(barcode);
+      }
+    },
+    []
+  );
+
+  const barcodeScanner = useBarcodeScanner({ barcodeFormats: ['all-formats'] })
+  const frameOutput = useFrameOutput({
+    pixelFormat: 'rgb',
+    onFrame(frame) {
+      'worklet';
+      const barcodes = barcodeScanner.scanCodes(frame)
+
+    
+      if (barcodes.length > 0) {
+        scheduleOnRN(setTextRecognised, barcodes[0].displayValue);
+        scheduleOnRN(setBarcodeRecognised, barcodes[0].displayValue);
+      }
+
+      const scannedText = scanText(frame);
+
+      if (scannedText?.resultText) {
+        scheduleOnRN(setTextRecognised, scannedText.resultText);
+      } else {
+        scheduleOnRN(setTextRecognised, undefined);
+      }
+
+      frame.dispose()
+    }
+  });
 
   const onImage = useCallback((textInImage: string) => {
     setCapturedText(textInImage || undefined);
@@ -57,25 +104,23 @@ const Camera = () => {
     setIsLoading(true);
 
     try {
-      const photo = await cameraRef.current?.takePhoto({
-        flash: flash ? 'on' : 'off',
-      });
+      const photo = await photoOutput.capturePhoto({
+        flashMode: flash ? 'on' : 'off',
+      }, {});
 
-      if (!photo?.path) {
-        throw Error('no image path found');
-      }
+      const photoFilePath = await photo.saveToTemporaryFileAsync();
 
-      const photoFilePath = `file://${photo?.path}`;
       let textInImage: string;
 
       if (crop) {
-        const croppedImage = await openCropper(photoFilePath, t);
-        textInImage = await recogniseText(croppedImage.path);
+        const croppedImage = await openCropper(`file://${photoFilePath}`, t);
+        textInImage = (await recogniseText(croppedImage.path)).resultText;
       } else {
-        textInImage = await recogniseText(photoFilePath);
+        textInImage = (await recogniseText(photoFilePath)).resultText;
       }
+
       onImage(textInImage);
-      await unlink(photo?.path);
+      await unlink(photoFilePath);
     } catch (err) {
       if (err instanceof Error) {
         showToast(err.message);
@@ -83,66 +128,15 @@ const Camera = () => {
     }
 
     setIsLoading(false);
-  }, [cameraRef, onImage, flash, crop, t]);
+  }, [onImage, flash, crop, t]);
 
   const openImagePicker = useCallback(async () => {
     try {
       const image = await openImage(t);
       const textInImage = await recogniseText(image.path);
-      onImage(textInImage);
+      onImage(textInImage.resultText);
     } catch (e) {}
   }, [onImage, t]);
-
-  const processCodes = Worklets.createRunOnJS((code: Barcode) => {
-    if (code?.value) {
-      isTextRecognised.current = true;
-      setBarcodeValue(code.value);
-    }
-  });
-
-  const processText = Worklets.createRunOnJS((hasText: boolean) => {
-    isTextRecognised.current = hasText;
-  });
-
-  const options = {language: 'latin' as const};
-  const {scanText} = useTextRecognition(options);
-
-  const frameProcessor = useFrameProcessor(frame => {
-    'worklet';
-
-    //runAsync(frame, () => {
-    runAtTargetFps(2, () => {
-      'worklet';
-      const data = scanText(frame);
-      processText(!!(data as unknown as Text)?.blocks);
-    });
-
-    runAtTargetFps(1, () => {
-      'worklet';
-
-      const detectedBarcodes = scanCodes(frame, {
-        barcodeTypes: [
-          'code-128',
-          'code-39',
-          'code-93',
-          'codabar',
-          'ean-13',
-          'ean-8',
-          'itf',
-          'upc-e',
-          'upc-a',
-          'qr',
-          'pdf-417',
-          'aztec',
-          'data-matrix',
-        ],
-      });
-
-      if (detectedBarcodes && detectedBarcodes.length > 0) {
-        processCodes(detectedBarcodes[0]);
-      }
-    });
-  }, []);
 
   useEffect(() => {
     if (!barcodeValue) {
@@ -158,8 +152,8 @@ const Camera = () => {
     }
   }, [barcodeValue]);
 
-  if (cameraPermission !== 'granted' || !device) {
-    return <PendingView status={cameraPermission} errorMsg={errorMsg} />;
+  if (cameraPermission !== 'authorized' || !device) {
+    return <PendingView status={cameraPermission} />;
   }
 
   return (
@@ -170,14 +164,10 @@ const Camera = () => {
             setCoverMode(coverMode === 'contain' ? 'cover' : 'contain')
           }>
           <RNVCamera
-            ref={cameraRef}
+            outputs={[photoOutput, frameOutput]}
             device={device}
             isActive={true}
             style={StyleSheet.absoluteFill}
-            frameProcessor={frameProcessor}
-            photo={true}
-            lowLightBoost={true}
-            enableFpsGraph={__DEV__}
             resizeMode={coverMode}
           />
         </TouchableWithoutFeedback>
