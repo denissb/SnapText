@@ -1,11 +1,11 @@
-import {PhotoRecognizer} from 'react-native-vision-camera-text-recognition';
+import {
+  PhotoRecognizer,
+  type Text,
+} from 'react-native-vision-camera-ocr-plus';
 
 export const recogniseText = async (imagePath: string) => {
-  const result = await PhotoRecognizer({
+  return await PhotoRecognizer({
     uri: imagePath,
     orientation: 'portrait',
   });
-
-  console.log(result);
-  return result.resultText;
 };

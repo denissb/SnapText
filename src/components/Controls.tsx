@@ -8,7 +8,7 @@ import {
   Platform,
   Linking,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
+import Icon from "@react-native-vector-icons/feather/static";
 
 import {useTranslation} from 'react-i18next';
 import Menu from './Menu';
@@ -73,7 +73,7 @@ const BottomControls: React.FC<Props> = ({
           <TouchableOpacity
             style={styles.linkBody}
             onPress={() => openLink(barCodeLink)}>
-            <Text style={styles.linkLabel}>{t('open_link')}</Text>
+            {barCodeLink.includes('://') && <Text style={styles.linkLabel}>{t('open_link')}</Text>}
             <Text
               numberOfLines={3}
               ellipsizeMode="tail"

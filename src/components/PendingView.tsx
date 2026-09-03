@@ -1,12 +1,12 @@
 import React, {useCallback} from 'react';
 import {Linking, TouchableOpacity} from 'react-native';
-import {CameraPermissionStatus} from 'react-native-vision-camera';
 import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {COLORS} from '../settings';
+import type { PermissionStatus } from 'react-native-vision-camera';
 
 type Props = {
-  status?: CameraPermissionStatus;
+  status?: PermissionStatus;
   errorMsg?: string;
 };
 

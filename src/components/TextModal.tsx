@@ -9,7 +9,7 @@ import {
   ScrollView,
 } from 'react-native';
 import {useTranslation} from 'react-i18next';
-import Icon from 'react-native-vector-icons/Feather';
+import Icon from "@react-native-vector-icons/feather/static";
 import {COLORS} from '../settings';
 import CopyButton from './CopyButton';
 

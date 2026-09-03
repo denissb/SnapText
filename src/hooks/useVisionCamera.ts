@@ -1,42 +1,18 @@
-import {Camera, CameraPermissionStatus} from 'react-native-vision-camera';
-import {AppState, NativeEventSubscription} from 'react-native';
-import {useEffect, useState} from 'react';
+import { useCameraPermission } from 'react-native-vision-camera';
+import { useEffect } from 'react';
 
 const useVisionCamera = () => {
-  const [cameraPermission, setCameraPermission] =
-    useState<CameraPermissionStatus>();
-  const [errorMsg, setErrorMsg] = useState<string>();
-
-  const getCameraPermissions = async () => {
-    try {
-      let permission = Camera.getCameraPermissionStatus();
-      if (permission !== 'granted') {
-        permission = await Camera.requestCameraPermission();
-      }
-      setCameraPermission(permission);
-    } catch (error: unknown) {
-      setErrorMsg((error as Error).message);
-    }
-  };
+  const {
+    status: cameraPermission,
+    hasPermission,
+    requestPermission,
+  } = useCameraPermission();
 
   useEffect(() => {
-    let listener: NativeEventSubscription | undefined;
-    if (!cameraPermission) {
-      getCameraPermissions();
-    } else if (cameraPermission === 'denied') {
-      listener = AppState.addEventListener('change', async state => {
-        if (state === 'active') {
-          let grantedPermission = Camera.getCameraPermissionStatus();
-          setCameraPermission(grantedPermission);
-        }
-      });
-    }
-    return () => {
-      listener?.remove();
-    };
-  }, [cameraPermission]);
+    if (!hasPermission) requestPermission();
+  }, [hasPermission, requestPermission]);
 
-  return {cameraPermission, errorMsg};
+  return { cameraPermission };
 };
 
 export default useVisionCamera;
