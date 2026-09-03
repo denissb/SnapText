@@ -10,3 +10,4 @@ Features:
 - Capture text from stored images
 - Select the area of the image you want to capture from
 - Quickly copy the text to clipboard or share
+- Scan documents to exportable PDFs
