@@ -145,7 +145,7 @@ const Camera = () => {
 
     try {
       const url = new URL(barcodeValue);
-      setBarCodeLink(url.href);
+        setBarCodeLink(url.href);
     } catch (e) {
       setCapturedText(barcodeValue);
       setIsModalVisible(true);

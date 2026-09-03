@@ -73,7 +73,7 @@ const BottomControls: React.FC<Props> = ({
           <TouchableOpacity
             style={styles.linkBody}
             onPress={() => openLink(barCodeLink)}>
-            <Text style={styles.linkLabel}>{t('open_link')}</Text>
+            {barCodeLink.includes('://') && <Text style={styles.linkLabel}>{t('open_link')}</Text>}
             <Text
               numberOfLines={3}
               ellipsizeMode="tail"
